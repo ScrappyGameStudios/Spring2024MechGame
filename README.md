@@ -36,8 +36,9 @@ command to run if program contains helper info
 
 Contributors names and contact info
 
-Erin Hook
+* Erin Hook
 [@Kantalope](https://twitter.com/Kantalope3469)
+    * Project Lead, Animator, Gameplay Engineer, Designer 
 
 ## Version History
 
