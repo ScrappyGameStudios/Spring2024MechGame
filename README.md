@@ -4,8 +4,7 @@ This project is a collaborative effort among members of UNT's Scrappy Game Studi
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
-
+Most game decisions are still to be determined, will update in the future.
 
 ## Getting Started
 
@@ -38,6 +37,7 @@ Contributors names and contact info
 
 * Erin Hook
 [@Kantalope](https://twitter.com/Kantalope3469)
+[itch page](https://kantalope.itch.io)
     * Project Lead, Animator, Gameplay Engineer, Designer 
 
 ## Version History
