@@ -1,27 +1,29 @@
-# Project Title
+# Spring 2024 Mech Game
 
-Simple overview of use/purpose.
+This project is a collaborative effort among members of UNT's Scrappy Game Studios to create a playable mech roguelike within the Spring 2024 semester.
 
 ## Description
 
 An in-depth paragraph about your project and overview of use.
 
+
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* Unity Engine Editor 2022.3.9f1
+* Blender 3.6
+* Adobe Creative Cloud
+    * Photoshop
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+Make sure that you have generated a Unity Engine license before proceeding.
+* From GitHub Desktop: clone repository wherever
+* Confirm use of LFS
+* Open project file
+* If the correct version of Unity hasn't been installed, a prompt will ask to install the correct version.
 
-### Executing program
-
-* How to run the program
-* Step-by-step bullets
 ```
 code blocks for commands
 ```
@@ -37,8 +39,8 @@ command to run if program contains helper info
 
 Contributors names and contact info
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+Erin Hook
+[@Kantalope](https://twitter.com/Kantalope3469)
 
 ## Version History
 
