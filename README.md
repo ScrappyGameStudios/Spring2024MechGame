@@ -23,14 +23,11 @@ Make sure that you have generated a Unity Engine license before proceeding.
 * Confirm use of LFS
 * Open project file
 * If the correct version of Unity hasn't been installed, a prompt will ask to install the correct version.
-
-```
-code blocks for commands
-```
+Kantalope3469
 
 ## Help
 
-Any advise for common problems or issues.
+Any advise for common problems or issues. To be updated.
 ```
 command to run if program contains helper info
 ```
@@ -44,9 +41,8 @@ Erin Hook
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
+* 0.1.1
+    * Imported unfinished scripting framework
 * 0.1
     * Initial Release
 
@@ -56,9 +52,4 @@ This project is licensed under the [NAME HERE] License - see the LICENSE.md file
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Any and all 3rd party assets will be credited here.
