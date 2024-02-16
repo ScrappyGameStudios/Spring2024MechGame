@@ -14,6 +14,8 @@ public class GunController : MonoBehaviour, IWeaponInput
     private bool wantToAttack;
     private bool wantToReload;
 
+    #region IWeaponInput
+
     public void OnWeaponAttack(InputAction.CallbackContext context)
     {
         if (context.performed) wantToAttack = true;
@@ -25,6 +27,8 @@ public class GunController : MonoBehaviour, IWeaponInput
         if (context.performed) wantToReload = true;
         else if (context.performed) wantToReload = false;
     }
+
+    #endregion
 
     // Start is called before the first frame update
     void Start()

@@ -11,5 +11,5 @@ public interface ILoadoutInput
     void OnLeftReload(InputAction.CallbackContext context);
     void OnRightShoulder(InputAction.CallbackContext context);
     void OnLeftShoulder(InputAction.CallbackContext context);
-    void OnMelee(InputAction.CallbackContext callback);
+    void OnMelee(InputAction.CallbackContext context);
 }

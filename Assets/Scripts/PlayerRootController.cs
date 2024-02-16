@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject Standard_Humanoid_Object;
     private IMoveInput Mover;
     private ILoadoutInput Arsenal;
+    private IAimInput Aimer;
 
     private void Awake()
     {
@@ -38,6 +39,13 @@ public class PlayerController : MonoBehaviour
         playerInput.MechControls.ToggleStrafeThrusters.performed += ctx => Mover.OnToggleStrafeThrusters(ctx);
         playerInput.MechControls.ToggleStrafeThrusters.canceled += ctx => Mover.OnToggleStrafeThrusters(ctx);
 
+        // send the player's input to Aimer
+        playerInput.MechControls.Aim.performed += ctx => Aimer.OnAiming(ctx);
+        playerInput.MechControls.Aim.canceled += ctx => Aimer.OnAiming(ctx);
+
+        playerInput.MechControls.ToggleTargetFocus.performed += ctx => Aimer.OnTarget(ctx);
+        playerInput.MechControls.ToggleTargetFocus.canceled += ctx => Aimer.OnTarget(ctx);
+
         // send the player's input to Arsenal
         playerInput.MechControls.RightMainWeaponFire.performed += ctx => Arsenal.OnRightAttack(ctx);
         playerInput.MechControls.RightMainWeaponFire.canceled += ctx => Arsenal.OnRightAttack(ctx);
@@ -56,6 +64,9 @@ public class PlayerController : MonoBehaviour
 
         playerInput.MechControls.UseEquipmentTwo.performed += ctx => Arsenal.OnRightShoulder(ctx);
         playerInput.MechControls.UseEquipmentTwo.canceled += ctx => Arsenal.OnRightShoulder(ctx);
+
+        playerInput.MechControls.Melee.performed += ctx => Arsenal.OnMelee(ctx);
+        playerInput.MechControls.Melee.canceled += ctx => Arsenal.OnMelee(ctx);
     }
 
     // Start is called before the first frame update
