@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class MechLoadout : MonoBehaviour, ILoadoutInput
 {
+
     [Header("Important Components")]
     [SerializeField] private IWeaponInput RightWeapon;
     [SerializeField] private IWeaponInput LeftWeapon;
