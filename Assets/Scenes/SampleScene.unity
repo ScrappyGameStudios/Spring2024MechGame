@@ -12437,6 +12437,8 @@ GameObject:
   - component: {fileID: 378840068}
   - component: {fileID: 378840069}
   - component: {fileID: 378840070}
+  - component: {fileID: 378840072}
+  - component: {fileID: 378840071}
   m_Layer: 0
   m_Name: PlayerMech
   m_TagString: Untagged
@@ -12497,16 +12499,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f0a1aa72bc3cc4eaf16a62fb654980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  rb: {fileID: 378840072}
   MechMoveAnimator: {fileID: 0}
-  CameraParent: {fileID: 0}
-  GroundCheck: {fileID: 0}
+  CameraParent: {fileID: 1632632635}
+  GroundCheck: {fileID: 1277576262}
   moveSpeed: 35
-  moveAccel: 100
+  thrustMoveSpeed: 50
+  maxGroundForce: 0.5
+  maxThrustForce: 0.3
   ThrustSpeed: 80
-  airStrafeAccel: 30
-  jumpSpeed: 20
+  maxAirForce: 0.05
+  jumpHeight: 5
   landStallDuration: 3.5
+--- !u!114 &378840071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378840067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98f1fb565c3f0b4eb0a8ac7bd53feae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &378840072
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378840067}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &381926206
 GameObject:
   m_ObjectHideFlags: 0
@@ -50875,7 +50918,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b336da0ab0fab48aea23d046908070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mech: {fileID: 378840070}
 --- !u!65 &1277576262
 BoxCollider:
   m_ObjectHideFlags: 0
