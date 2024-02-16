@@ -67,7 +67,7 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     public void OnRushThrust(InputAction.CallbackContext context)
     {
-        if (context.performed) RushThrust();
+        if (context.performed) rushThrusterActive = true;
     }
 
     public void OnToggleStrafeThrusters(InputAction.CallbackContext context)

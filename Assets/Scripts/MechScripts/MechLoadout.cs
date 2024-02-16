@@ -16,6 +16,13 @@ public class MechLoadout : MonoBehaviour, ILoadoutInput
     private IWeaponInput RightShoulderInput;
     private IWeaponInput LeftShoulderInput;
 
+    [Header("Repair Functionality")]
+    [SerializeField] private int startingPacks;
+    [SerializeField] private float repairDelay;
+    [SerializeField] private float repairAmount;
+    private float repairTime;
+    private int packsRemaining;
+
     #region ILoadoutInput
 
     private void Awake()
@@ -56,6 +63,14 @@ public class MechLoadout : MonoBehaviour, ILoadoutInput
         LeftShoulderInput?.OnWeaponAttack(context);
     }
 
+    public void OnRepair(InputAction.CallbackContext context)
+    {
+        if (repairTime > 0 && packsRemaining > 0)
+        {
+            Repair(); 
+        }
+    }
+
     public void OnMelee(InputAction.CallbackContext callback)
     {
         // I dunno, figure it out later
@@ -72,6 +87,14 @@ public class MechLoadout : MonoBehaviour, ILoadoutInput
     // Update is called once per frame
     void Update()
     {
-        
+        if (repairTime > 0f) repairTime -= Time.deltaTime;
+    }
+
+    private void Repair()
+    {
+        // heal in the IStatusHandler
+
+        repairTime = repairDelay;
+        packsRemaining--;
     }
 }
