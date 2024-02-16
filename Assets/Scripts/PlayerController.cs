@@ -15,6 +15,12 @@ public class PlayerController : MonoBehaviour
     {
         playerInput = new PlayerInput();
 
+        TakeControlOfMech();
+    }
+
+    // initiate control over the mech
+    private void TakeControlOfMech()
+    {
         // send the player's input to Mover
         playerInput.MechControls.LateralMove.performed += ctx => Mover.OnMove(ctx);
         playerInput.MechControls.LateralMove.canceled += ctx => Mover.OnMove(ctx);

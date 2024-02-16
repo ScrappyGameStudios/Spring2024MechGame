@@ -54,7 +54,7 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed) Jump();
+        if (!context.canceled) Jump();
     }
 
     public void OnDash(InputAction.CallbackContext context)
