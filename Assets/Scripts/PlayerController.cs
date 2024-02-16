@@ -9,8 +9,10 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
 
     [Header("Important Components")]
-    [SerializeField] private IMoveInput Mover;
-    [SerializeField] private ILoadoutInput Arsenal;
+    [SerializeField] private GameObject Mech_Object;
+    [SerializeField] private GameObject Standard_Humanoid_Object;
+    private IMoveInput Mover;
+    private ILoadoutInput Arsenal;
 
     private void Awake()
     {
@@ -22,6 +24,10 @@ public class PlayerController : MonoBehaviour
     // initiate control over the mech
     private void TakeControlOfMech()
     {
+        // set interfaces to mech
+        Mover = Mech_Object.GetComponent<IMoveInput>();
+        Arsenal = Mech_Object.GetComponent<ILoadoutInput>();
+
         // send the player's input to Mover
         playerInput.MechControls.LateralMove.performed += ctx => Mover.OnMove(ctx);
         playerInput.MechControls.LateralMove.canceled += ctx => Mover.OnMove(ctx);

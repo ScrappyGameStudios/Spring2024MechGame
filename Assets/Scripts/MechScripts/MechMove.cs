@@ -15,6 +15,7 @@ public class MechMove : MonoBehaviour, IMoveInput
     private bool strafeThrusterActive;
     private bool rushThrusterActive;
     private bool dashActive;
+    private bool wantToJump;
 
     [Header("Standard Movement")]
     [SerializeField] private float moveSpeed;
@@ -45,6 +46,7 @@ public class MechMove : MonoBehaviour, IMoveInput
         strafeThrusterActive = false;
         rushThrusterActive = false;
         dashActive = false;
+        wantToJump = false;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -54,7 +56,8 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!context.canceled) Jump();
+        if (context.performed) wantToJump = true;
+        else if (context.canceled) wantToJump = false;
     }
 
     public void OnDash(InputAction.CallbackContext context)
@@ -88,6 +91,11 @@ public class MechMove : MonoBehaviour, IMoveInput
         // move or rush?
         if (rushThrusterActive) RushThrust();
         else LateralMove();
+
+        if (wantToJump)
+        {
+            Jump();
+        }
     }
 
     #region movement
@@ -117,16 +125,22 @@ public class MechMove : MonoBehaviour, IMoveInput
     // jump
     private void Jump()
     {
-        Vector3 jumpForces = rb.velocity;
-
-        float jumpVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
-
         if (isGrounded)
         {
-            jumpForces.y = jumpVelocity;
+            float jumpVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
+            Vector3 newVertVelocity = new Vector3(rb.velocity.x, jumpVelocity, rb.velocity.z);
+
+            rb.velocity = newVertVelocity;
+        }
+        else
+        {
+            float vertThrust = maxThrustForce * Time.fixedDeltaTime;
+            Vector3 vertThrustVelChange = new Vector3(0, vertThrust, 0);
+
+            rb.AddForce(vertThrustVelChange, ForceMode.VelocityChange);
         }
 
-        rb.velocity = jumpForces;
+        
     }
 
     private void Dash()
