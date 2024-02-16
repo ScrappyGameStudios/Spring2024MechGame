@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WeaponController : MonoBehaviour, IWeaponInput
+public class GunController : MonoBehaviour, IWeaponInput
 {
     [Header("Necessary References")]
     [SerializeField] private Transform MuzzlePoint;
+    [SerializeField] private Animator GunAnimator;
+
+    [Header("Attack/Ammo References")]
 
     private bool wantToAttack;
     private bool wantToReload;

@@ -109,6 +109,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""3fb87cc9-a5f6-46ee-86b5-e843ae851dd2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""ToggleStrafeThrusters"",
                     ""type"": ""Button"",
                     ""id"": ""481cf499-1afd-437d-9d68-b172114e48b2"",
@@ -130,6 +139,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": ""Melee"",
                     ""type"": ""Button"",
                     ""id"": ""8534e52b-3faa-4e90-a07c-ca9744b14a39"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RepairPack"",
+                    ""type"": ""Button"",
+                    ""id"": ""736bb193-642c-429f-b1ce-5102fe4e3e9d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -239,7 +257,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7fc3d87e-245c-4735-8818-c96a5f278079"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -266,6 +284,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be16a05a-37db-4cc5-a9e4-98443a6eb4f5"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52cad4b8-c985-4cb9-a95a-40a9c362735f"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RepairPack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -333,9 +373,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_MechControls_RightMainWeaponReload = m_MechControls.FindAction("RightMainWeaponReload", throwIfNotFound: true);
         m_MechControls_UseEquipmentOne = m_MechControls.FindAction("UseEquipmentOne", throwIfNotFound: true);
         m_MechControls_UseEquipmentTwo = m_MechControls.FindAction("UseEquipmentTwo", throwIfNotFound: true);
+        m_MechControls_Dash = m_MechControls.FindAction("Dash", throwIfNotFound: true);
         m_MechControls_ToggleStrafeThrusters = m_MechControls.FindAction("ToggleStrafeThrusters", throwIfNotFound: true);
         m_MechControls_ToggleTargetFocus = m_MechControls.FindAction("ToggleTargetFocus", throwIfNotFound: true);
         m_MechControls_Melee = m_MechControls.FindAction("Melee", throwIfNotFound: true);
+        m_MechControls_RepairPack = m_MechControls.FindAction("RepairPack", throwIfNotFound: true);
         // PersistentControls
         m_PersistentControls = asset.FindActionMap("PersistentControls", throwIfNotFound: true);
         m_PersistentControls_Pause = m_PersistentControls.FindAction("Pause", throwIfNotFound: true);
@@ -410,9 +452,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_MechControls_RightMainWeaponReload;
     private readonly InputAction m_MechControls_UseEquipmentOne;
     private readonly InputAction m_MechControls_UseEquipmentTwo;
+    private readonly InputAction m_MechControls_Dash;
     private readonly InputAction m_MechControls_ToggleStrafeThrusters;
     private readonly InputAction m_MechControls_ToggleTargetFocus;
     private readonly InputAction m_MechControls_Melee;
+    private readonly InputAction m_MechControls_RepairPack;
     public struct MechControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -426,9 +470,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @RightMainWeaponReload => m_Wrapper.m_MechControls_RightMainWeaponReload;
         public InputAction @UseEquipmentOne => m_Wrapper.m_MechControls_UseEquipmentOne;
         public InputAction @UseEquipmentTwo => m_Wrapper.m_MechControls_UseEquipmentTwo;
+        public InputAction @Dash => m_Wrapper.m_MechControls_Dash;
         public InputAction @ToggleStrafeThrusters => m_Wrapper.m_MechControls_ToggleStrafeThrusters;
         public InputAction @ToggleTargetFocus => m_Wrapper.m_MechControls_ToggleTargetFocus;
         public InputAction @Melee => m_Wrapper.m_MechControls_Melee;
+        public InputAction @RepairPack => m_Wrapper.m_MechControls_RepairPack;
         public InputActionMap Get() { return m_Wrapper.m_MechControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -465,6 +511,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @UseEquipmentTwo.started += instance.OnUseEquipmentTwo;
             @UseEquipmentTwo.performed += instance.OnUseEquipmentTwo;
             @UseEquipmentTwo.canceled += instance.OnUseEquipmentTwo;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
             @ToggleStrafeThrusters.started += instance.OnToggleStrafeThrusters;
             @ToggleStrafeThrusters.performed += instance.OnToggleStrafeThrusters;
             @ToggleStrafeThrusters.canceled += instance.OnToggleStrafeThrusters;
@@ -474,6 +523,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Melee.started += instance.OnMelee;
             @Melee.performed += instance.OnMelee;
             @Melee.canceled += instance.OnMelee;
+            @RepairPack.started += instance.OnRepairPack;
+            @RepairPack.performed += instance.OnRepairPack;
+            @RepairPack.canceled += instance.OnRepairPack;
         }
 
         private void UnregisterCallbacks(IMechControlsActions instance)
@@ -505,6 +557,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @UseEquipmentTwo.started -= instance.OnUseEquipmentTwo;
             @UseEquipmentTwo.performed -= instance.OnUseEquipmentTwo;
             @UseEquipmentTwo.canceled -= instance.OnUseEquipmentTwo;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
             @ToggleStrafeThrusters.started -= instance.OnToggleStrafeThrusters;
             @ToggleStrafeThrusters.performed -= instance.OnToggleStrafeThrusters;
             @ToggleStrafeThrusters.canceled -= instance.OnToggleStrafeThrusters;
@@ -514,6 +569,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Melee.started -= instance.OnMelee;
             @Melee.performed -= instance.OnMelee;
             @Melee.canceled -= instance.OnMelee;
+            @RepairPack.started -= instance.OnRepairPack;
+            @RepairPack.performed -= instance.OnRepairPack;
+            @RepairPack.canceled -= instance.OnRepairPack;
         }
 
         public void RemoveCallbacks(IMechControlsActions instance)
@@ -596,9 +654,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnRightMainWeaponReload(InputAction.CallbackContext context);
         void OnUseEquipmentOne(InputAction.CallbackContext context);
         void OnUseEquipmentTwo(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
         void OnToggleStrafeThrusters(InputAction.CallbackContext context);
         void OnToggleTargetFocus(InputAction.CallbackContext context);
         void OnMelee(InputAction.CallbackContext context);
+        void OnRepairPack(InputAction.CallbackContext context);
     }
     public interface IPersistentControlsActions
     {
