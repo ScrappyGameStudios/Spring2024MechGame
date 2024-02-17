@@ -12,6 +12,7 @@ public class MechAim : MonoBehaviour, IAimInput
     [SerializeField] private Transform Cam;
     [SerializeField] private Vector3 DefaultCamPosition;
     [SerializeField] private Vector3 PrecisionCamPosition;
+    [SerializeField] private Vector3 DashCamPosition;
     private bool onRightSide;
     private Vector2 aimInput;
 
