@@ -79202,6 +79202,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 201543163}
     m_Modifications:
+    - target: {fileID: 1141292790211875882, guid: d7a92bc3be5bf88469ec2038832675c3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 79173e5df5c2d4943a8acb5394dc11fc, type: 2}
+    - target: {fileID: 2358697843735004781, guid: d7a92bc3be5bf88469ec2038832675c3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 79173e5df5c2d4943a8acb5394dc11fc, type: 2}
     - target: {fileID: 4096830730744698969, guid: d7a92bc3be5bf88469ec2038832675c3, type: 3}
       propertyPath: m_Name
       value: PlayerMech
@@ -79246,6 +79254,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6055787799029376544, guid: d7a92bc3be5bf88469ec2038832675c3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 79173e5df5c2d4943a8acb5394dc11fc, type: 2}
+    - target: {fileID: 7144799259878242524, guid: d7a92bc3be5bf88469ec2038832675c3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 79173e5df5c2d4943a8acb5394dc11fc, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

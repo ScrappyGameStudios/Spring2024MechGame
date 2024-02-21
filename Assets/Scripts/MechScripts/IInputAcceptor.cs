@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public interface IInputAcceptor
 {
-    void OnAiming(InputAction.CallbackContext context);
+    void OnMouseLook(InputAction.CallbackContext context);
+    void OnGamepadLook(InputAction.CallbackContext context);
     void OnTarget(InputAction.CallbackContext context);
     void OnRightAttack(InputAction.CallbackContext context);
     void OnRightReload(InputAction.CallbackContext context);

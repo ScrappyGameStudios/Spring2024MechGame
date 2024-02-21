@@ -54,9 +54,15 @@ public class MechController : MonoBehaviour, IInputAcceptor
     #endregion
 
     #region IAimInput
-    public void OnAiming(InputAction.CallbackContext context)
+    
+    public void OnMouseLook(InputAction.CallbackContext context)
     {
-        MechAim?.OnAiming(context);
+        MechAim?.OnMouseLook(context);
+    }
+
+    public void OnGamepadLook(InputAction.CallbackContext context)
+    {
+        MechAim?.OnGamepadLook(context);
     }
 
     public void OnTarget(InputAction.CallbackContext context)

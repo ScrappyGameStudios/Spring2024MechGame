@@ -40,8 +40,8 @@ public class PlayerController : MonoBehaviour
         playerInput.MechControls.ToggleStrafeThrusters.canceled += ctx => Mover.OnToggleStrafeThrusters(ctx);
 
         // send the player's input to Aimer
-        playerInput.MechControls.Aim.performed += ctx => Aimer.OnAiming(ctx);
-        playerInput.MechControls.Aim.canceled += ctx => Aimer.OnAiming(ctx);
+        playerInput.MechControls.Aim.performed += ctx => Aimer.OnMouseLook(ctx);
+        playerInput.MechControls.Aim.canceled += ctx => Aimer.OnMouseLook(ctx);
 
         playerInput.MechControls.ToggleTargetFocus.performed += ctx => Aimer.OnTarget(ctx);
         playerInput.MechControls.ToggleTargetFocus.canceled += ctx => Aimer.OnTarget(ctx);

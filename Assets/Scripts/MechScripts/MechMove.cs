@@ -11,23 +11,33 @@ public class MechMove : MonoBehaviour, IMoveInput
     [SerializeField] private Animator MechMoveAnimator;
     [SerializeField] private Transform CameraParent;
     [SerializeField] private Collider GroundCheck;
+    [SerializeField] private Collider PlayerCollider;
     private bool isGrounded;
     private bool strafeThrusterActive;
     private bool rushThrusterActive;
     private bool dashActive;
     private bool wantToJump;
+    private bool wantToRush;
 
-    [Header("Standard Movement")]
+    [Header("Strafing")]
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float thrustMoveSpeed;
+    [SerializeField] private float strafeMoveSpeed;
     [SerializeField] private float maxGroundForce;
+    [SerializeField] private float maxAirForce;
+
+    [Header("Vertical Thruster")]
     [SerializeField] private float maxThrustForce;
+    [SerializeField] private float maxThrustVelocity;
+    [SerializeField] private float thrustRechargeRate;
+    [SerializeField] private float thrustDelay;
+    [SerializeField] private float thrustCapacity;
+    private float _thrustDelay;
+    private float _thrustCapacity;
 
     [Header("Rush Thrusters")]
     [SerializeField] private float ThrustSpeed;
 
     [Header("Air Movement")]
-    [SerializeField] private float maxAirForce;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float landStallDuration;
 
@@ -56,18 +66,17 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed) wantToJump = true;
-        else if (context.canceled) wantToJump = false;
+        wantToJump = context.ReadValueAsButton();
     }
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.performed) Dash();
+        Dash();
     }
 
     public void OnRushThrust(InputAction.CallbackContext context)
     {
-        if (context.performed) rushThrusterActive = true;
+        wantToRush = context.ReadValueAsButton();
     }
 
     public void OnToggleStrafeThrusters(InputAction.CallbackContext context)
@@ -98,15 +107,23 @@ public class MechMove : MonoBehaviour, IMoveInput
         }
     }
 
+    private void Update()
+    {
+        ThrusterUpdate();
+    }
+
     #region movement
 
     // lateral move
     private void LateralMove()
     {
+        // check if grounded
+        // raycast
+
         // find target velocity
         Vector3 currentVelocity = rb.velocity;
         Vector3 targetVelocity = new Vector3(move.x, 0, move.y);
-        targetVelocity *= strafeThrusterActive? thrustMoveSpeed : moveSpeed;
+        targetVelocity *= strafeThrusterActive? strafeMoveSpeed : moveSpeed;
 
         // align direction
         targetVelocity = transform.TransformDirection(targetVelocity);
@@ -128,19 +145,29 @@ public class MechMove : MonoBehaviour, IMoveInput
         if (isGrounded)
         {
             float jumpVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
-            Vector3 newVertVelocity = new Vector3(rb.velocity.x, jumpVelocity, rb.velocity.z);
 
-            rb.velocity = newVertVelocity;
+            rb.AddForce(jumpVelocity * Vector3.up, ForceMode.VelocityChange);
         }
         else
         {
-            float vertThrust = maxThrustForce * Time.fixedDeltaTime;
-            Vector3 vertThrustVelChange = new Vector3(0, vertThrust, 0);
+            if (rb.velocity.y < maxThrustVelocity && _thrustCapacity > 0f)
+            {
+                _thrustDelay = thrustDelay;
+                if (_thrustCapacity > 0f) _thrustCapacity += Time.fixedDeltaTime;
 
-            rb.AddForce(vertThrustVelChange, ForceMode.VelocityChange);
+                float vertThrust = maxThrustForce * Time.fixedDeltaTime;
+                Vector3 vertThrustVelChange = new Vector3(0, vertThrust, 0);
+
+                rb.AddForce(vertThrustVelChange, ForceMode.VelocityChange);
+            }
         }
+    }
 
-        
+    private void ThrusterUpdate()
+    {
+        // thruster stuff
+        if (_thrustDelay > 0f) _thrustDelay -= Time.deltaTime;
+        else if (_thrustCapacity > 0f) _thrustCapacity += (thrustRechargeRate * Time.deltaTime);
     }
 
     private void Dash()
