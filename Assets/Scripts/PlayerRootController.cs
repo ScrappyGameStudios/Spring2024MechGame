@@ -11,13 +11,13 @@ public class PlayerController : MonoBehaviour
     [Header("Important Components")]
     [SerializeField] private GameObject Mech_Object;
     [SerializeField] private GameObject Standard_Humanoid_Object;
-    private IMoveInput Mover;
-    private ILoadoutInput Arsenal;
-    private IAimInput Aimer;
+    private IInputAcceptor MechControls;
 
     private void Awake()
     {
         playerInput = new PlayerInput();
+
+        playerInput.MechControls.Enable();
 
         TakeControlOfMech();
     }
@@ -25,48 +25,52 @@ public class PlayerController : MonoBehaviour
     // initiate control over the mech
     private void TakeControlOfMech()
     {
+        // enable mech controls
+        playerInput.MechControls.Enable();
+
         // set interfaces to mech
-        Mover = Mech_Object.GetComponent<IMoveInput>();
-        Arsenal = Mech_Object.GetComponent<ILoadoutInput>();
+        MechControls = Mech_Object.GetComponent<IInputAcceptor>();
+
+        MechControls.DebugCheck();
 
         // send the player's input to Mover
-        playerInput.MechControls.LateralMove.performed += ctx => Mover.OnMove(ctx);
-        playerInput.MechControls.LateralMove.canceled += ctx => Mover.OnMove(ctx);
+        playerInput.MechControls.LateralMove.performed += ctx => MechControls.OnMove(ctx);
+        playerInput.MechControls.LateralMove.canceled += ctx => MechControls.OnMove(ctx);
 
-        playerInput.MechControls.Jump.performed += ctx => Mover.OnJump(ctx);
-        playerInput.MechControls.Jump.canceled += ctx => Mover.OnJump(ctx);
+        playerInput.MechControls.Jump.performed += ctx => MechControls.OnJump(ctx);
+        playerInput.MechControls.Jump.canceled += ctx => MechControls.OnJump(ctx);
 
-        playerInput.MechControls.ToggleStrafeThrusters.performed += ctx => Mover.OnToggleStrafeThrusters(ctx);
-        playerInput.MechControls.ToggleStrafeThrusters.canceled += ctx => Mover.OnToggleStrafeThrusters(ctx);
+        playerInput.MechControls.ToggleStrafeThrusters.performed += ctx => MechControls.OnToggleStrafeThrusters(ctx);
+        playerInput.MechControls.ToggleStrafeThrusters.canceled += ctx => MechControls.OnToggleStrafeThrusters(ctx);
 
         // send the player's input to Aimer
-        playerInput.MechControls.Aim.performed += ctx => Aimer.OnMouseLook(ctx);
-        playerInput.MechControls.Aim.canceled += ctx => Aimer.OnMouseLook(ctx);
+        playerInput.MechControls.Aim.performed += ctx => MechControls.OnGamepadLook(ctx);
+        playerInput.MechControls.Aim.canceled += ctx => MechControls.OnGamepadLook(ctx);
 
-        playerInput.MechControls.ToggleTargetFocus.performed += ctx => Aimer.OnTarget(ctx);
-        playerInput.MechControls.ToggleTargetFocus.canceled += ctx => Aimer.OnTarget(ctx);
+        playerInput.MechControls.ToggleTargetFocus.performed += ctx => MechControls.OnTarget(ctx);
+        playerInput.MechControls.ToggleTargetFocus.canceled += ctx => MechControls.OnTarget(ctx);
 
         // send the player's input to Arsenal
-        playerInput.MechControls.RightMainWeaponFire.performed += ctx => Arsenal.OnRightAttack(ctx);
-        playerInput.MechControls.RightMainWeaponFire.canceled += ctx => Arsenal.OnRightAttack(ctx);
+        playerInput.MechControls.RightMainWeaponFire.performed += ctx => MechControls.OnRightAttack(ctx);
+        playerInput.MechControls.RightMainWeaponFire.canceled += ctx => MechControls.OnRightAttack(ctx);
 
-        playerInput.MechControls.RightMainWeaponReload.performed += ctx => Arsenal.OnRightReload(ctx);
-        playerInput.MechControls.RightMainWeaponReload.canceled += ctx => Arsenal.OnRightReload(ctx);
+        playerInput.MechControls.RightMainWeaponReload.performed += ctx => MechControls.OnRightReload(ctx);
+        playerInput.MechControls.RightMainWeaponReload.canceled += ctx => MechControls.OnRightReload(ctx);
 
-        playerInput.MechControls.LeftMainWeaponFire.performed += ctx => Arsenal.OnLeftAttack(ctx);
-        playerInput.MechControls.LeftMainWeaponFire.canceled += ctx => Arsenal.OnLeftAttack(ctx);
+        playerInput.MechControls.LeftMainWeaponFire.performed += ctx => MechControls.OnLeftAttack(ctx);
+        playerInput.MechControls.LeftMainWeaponFire.canceled += ctx => MechControls.OnLeftAttack(ctx);
 
-        playerInput.MechControls.LeftMainWeaponReload.performed += ctx => Arsenal.OnLeftReload(ctx);
-        playerInput.MechControls.LeftMainWeaponReload.canceled += ctx => Arsenal.OnLeftReload(ctx);
+        playerInput.MechControls.LeftMainWeaponReload.performed += ctx => MechControls.OnLeftReload(ctx);
+        playerInput.MechControls.LeftMainWeaponReload.canceled += ctx => MechControls.OnLeftReload(ctx);
 
-        playerInput.MechControls.UseEquipmentOne.performed += ctx => Arsenal.OnLeftShoulder(ctx);
-        playerInput.MechControls.UseEquipmentOne.canceled += ctx => Arsenal.OnLeftShoulder(ctx);
+        playerInput.MechControls.UseEquipmentOne.performed += ctx => MechControls.OnLeftShoulder(ctx);
+        playerInput.MechControls.UseEquipmentOne.canceled += ctx => MechControls.OnLeftShoulder(ctx);
 
-        playerInput.MechControls.UseEquipmentTwo.performed += ctx => Arsenal.OnRightShoulder(ctx);
-        playerInput.MechControls.UseEquipmentTwo.canceled += ctx => Arsenal.OnRightShoulder(ctx);
+        playerInput.MechControls.UseEquipmentTwo.performed += ctx => MechControls.OnRightShoulder(ctx);
+        playerInput.MechControls.UseEquipmentTwo.canceled += ctx => MechControls.OnRightShoulder(ctx);
 
-        playerInput.MechControls.Melee.performed += ctx => Arsenal.OnMelee(ctx);
-        playerInput.MechControls.Melee.canceled += ctx => Arsenal.OnMelee(ctx);
+        playerInput.MechControls.Melee.performed += ctx => MechControls.OnMelee(ctx);
+        playerInput.MechControls.Melee.canceled += ctx => MechControls.OnMelee(ctx);
     }
 
     // Start is called before the first frame update

@@ -76,6 +76,11 @@ public class MechLoadout : MonoBehaviour, ILoadoutInput
         // I dunno, figure it out later
     }
 
+    public void DebugCheck()
+    {
+        Debug.Log("MechLoadout found!");
+    }
+
     #endregion
 
     // Start is called before the first frame update

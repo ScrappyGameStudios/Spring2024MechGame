@@ -6,22 +6,34 @@ using UnityEngine.InputSystem;
 public class MechAim : MonoBehaviour, IAimInput
 {
     [Header("Normal Necessary References")]
-    [SerializeField] private Transform camHolder;
+    [SerializeField] private Transform MechParent;
 
     [Header("Camera References")]
+    [SerializeField] private Transform CamHolder;
+    private Camera camera;
     [SerializeField] private Transform Cam;
-    [SerializeField] private Vector3 DefaultCamPosition;
-    [SerializeField] private Vector3 PrecisionCamPosition;
+    [SerializeField] private Transform DefaultCamPosition;
+    [SerializeField] private Transform PrecisionCamPosition;
     [SerializeField] private Vector3 DashCamPosition;
-    [SerializeField] private Vector2 mouseSensitivity;
-    [SerializeField] private Vector2 gamepadSensitivity;
+    [SerializeField] private Vector2 mouseDefaultSens;
+    [SerializeField] private Vector2 gamepadDefaultSens;
+    [SerializeField] private Vector2 mouseZoomSens;
+    [SerializeField] private Vector2 gamepadZoomSens;
+    [SerializeField] private float defaultFOV;
+    [SerializeField] private float aimedFOVMulti;
+    [SerializeField] private float zoomSpeed;
+    private float aimedFOV;
+    private float targetFOV;
     private Vector2 mouseLook, gamepadLook;
+    private Vector2 mouseSens, gamepadSens;
+    private Vector2 mouseTargetSens, gamepadTargetSens;
     private float lookRotation;
     private float gamepadAcceleration;
     private float gamepadFriction, gamepadMagnetism;
     private float mouseFriction, mouseMagnetism;
     private bool onRightSide;
     private Vector2 aimInput;
+    private Transform CamTarget;
 
     [Header("Manual Aim")]
     [SerializeField] private float turnSpeed;
@@ -45,7 +57,36 @@ public class MechAim : MonoBehaviour, IAimInput
 
     public void OnTarget(InputAction.CallbackContext context)
     {
-        if (context.performed) onRightSide = !onRightSide;
+        if (context.performed)
+        {
+            if (isZoomed)
+            {
+                isZoomed = false;
+                CamTarget = DefaultCamPosition;
+                targetFOV = defaultFOV;
+                mouseTargetSens = mouseDefaultSens;
+                gamepadTargetSens = gamepadDefaultSens;
+            }
+            else
+            {
+                isZoomed = true;
+                CamTarget = PrecisionCamPosition;
+                targetFOV = aimedFOV;
+                mouseTargetSens = mouseZoomSens;
+                gamepadTargetSens = gamepadZoomSens;
+            }
+
+            Debug.Log("camera.fieldOfView: " + camera.fieldOfView);
+            Debug.Log("targetFOV: " + targetFOV);
+
+            Debug.Log("Cam Local Position: " + Cam.localPosition);
+            Debug.Log("CamTarget Local Position: " + CamTarget.localPosition);
+        }
+    }
+
+    public void DebugCheck()
+    {
+        Debug.Log("MechAim found!");
     }
 
     #endregion
@@ -53,7 +94,23 @@ public class MechAim : MonoBehaviour, IAimInput
     // Start is called before the first frame update
     void Start()
     {
-        
+        mouseFriction = 0f;
+        gamepadFriction = 0f;
+        gamepadAcceleration = 1f;
+
+        CamTarget = DefaultCamPosition;
+        aimedFOV = defaultFOV / aimedFOVMulti;
+        camera = Cam.GetComponent<Camera>();
+        camera.fieldOfView = defaultFOV;
+        targetFOV = defaultFOV;
+        mouseSens = mouseDefaultSens;
+        gamepadSens = gamepadDefaultSens;
+
+        Debug.Log("defaultFOV: " + defaultFOV);
+        Debug.Log("aimedFOV: " + aimedFOV);
+
+        Debug.Log("Cam Local Position: " + Cam.localPosition);
+        Debug.Log("CamTarget Local Position: " + CamTarget.localPosition);
     }
 
     private void LateUpdate()
@@ -61,24 +118,26 @@ public class MechAim : MonoBehaviour, IAimInput
         GamepadLookAcceleration();
         AimMagnetism();
         Look();
+        MoveCamera();
     }
 
     private void Look()
     {
         // left/right inputs
-        Vector3 mouseTurn = Vector3.up * mouseLook.x * mouseSensitivity.x * (1f - mouseFriction);
-        Vector3 gamepadTurn = Vector3.up * gamepadLook.x * gamepadSensitivity.x * gamepadAcceleration * (1f - gamepadFriction);
+        Vector3 mouseTurn = Vector3.up * mouseLook.x * mouseSens.x * (1f - mouseFriction);
+        Vector3 gamepadTurn = Vector3.up * gamepadLook.x * gamepadSens.x * gamepadAcceleration * (1f - gamepadFriction);
 
         // turn
-        camHolder.Rotate(mouseTurn + gamepadTurn);
+        MechParent.Rotate(mouseTurn + gamepadTurn);
 
         // up/down inputs
-        float mouseRotation = -mouseLook.y * mouseSensitivity.y * (1f - mouseFriction);
-        float gamepadRotation = -gamepadLook.y * gamepadSensitivity.y * gamepadAcceleration * (1f - gamepadFriction);
+        float mouseRotation = -mouseLook.y * mouseSens.y * (1f - mouseFriction);
+        float gamepadRotation = -gamepadLook.y * gamepadSens.y * gamepadAcceleration * (1f - gamepadFriction);
 
         // look
         lookRotation += (mouseRotation + gamepadRotation);
-        lookRotation = Mathf.Clamp(lookRotation, -90, 90);
+        lookRotation = Mathf.Clamp(lookRotation, -75, 75);
+        CamHolder.eulerAngles = new Vector3(lookRotation, CamHolder.eulerAngles.y, CamHolder.eulerAngles.z);
     }
 
     /* Set up acceleration based on the magnitude and duration of gamepad aim input
@@ -100,5 +159,33 @@ public class MechAim : MonoBehaviour, IAimInput
         gamepadMagnetism = gpMagnetism;
         mouseFriction = mFriction;
         mouseMagnetism = mMagnetism;
+    }
+
+    private void MoveCamera()
+    {
+        if (Cam.localPosition != CamTarget.localPosition)
+        {
+            // get distance to move
+            Vector3 camMagnitude = (CamTarget.localPosition - Cam.localPosition) / zoomSpeed * Time.deltaTime;
+
+            Cam.localPosition += camMagnitude;
+        }
+
+        if (camera.fieldOfView != targetFOV)
+        {
+            // difference in FOV
+            float zoomMagnitude = (targetFOV - camera.fieldOfView) / zoomSpeed * Time.deltaTime;
+
+            camera.fieldOfView += zoomMagnitude;
+        }
+
+        if (mouseSens != mouseTargetSens || gamepadSens != gamepadTargetSens)
+        {
+            Vector2 mouseMagnitude = (mouseTargetSens - mouseSens) / zoomSpeed * Time.deltaTime;
+            Vector2 gamepadMagnitude = (gamepadTargetSens - gamepadSens) / zoomSpeed * Time.deltaTime;
+
+            mouseSens += mouseMagnitude;
+            gamepadSens += gamepadMagnitude;
+        }
     }
 }

@@ -21,6 +21,6 @@ public interface IInputAcceptor
     void OnRushThrust(InputAction.CallbackContext context);
     void OnToggleStrafeThrusters(InputAction.CallbackContext context);
     void SetGrounded(bool state);
-    void ForceGrounded(bool state);
     GameObject GetGameObject();
+    void DebugCheck();
 }

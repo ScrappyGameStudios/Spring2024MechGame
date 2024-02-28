@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class GroundCheck : MonoBehaviour
 {
-    [SerializeField] private IMoveInput mover;
+    [SerializeField] private GameObject Mover;
+    private IMoveInput mover;
+
+    private void Awake()
+    {
+        mover = Mover.GetComponent<IMoveInput>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {

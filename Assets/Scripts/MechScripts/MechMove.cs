@@ -83,14 +83,14 @@ public class MechMove : MonoBehaviour, IMoveInput
     {
         if (context.performed) StrafeThrusterToggle();
     }
-    
-    public void ForceGrounded(bool state)
-    {
-
-    }
 
     public void SetGrounded(bool state) { isGrounded = state; }
     public GameObject GetGameObject() { return gameObject; }
+
+    public void DebugCheck()
+    {
+        Debug.Log("MechMove found!");
+    }
 
     #endregion
 
@@ -110,6 +110,14 @@ public class MechMove : MonoBehaviour, IMoveInput
     private void Update()
     {
         ThrusterUpdate();
+    }
+
+    // check all contacts with the ground to figure out angle of movement
+    private Vector3 FindSlopeAngle()
+    {
+        // all 
+
+        return Vector3.zero;
     }
 
     #region movement

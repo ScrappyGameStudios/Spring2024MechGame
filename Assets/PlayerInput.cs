@@ -31,7 +31,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": ""LateralMove"",
                     ""type"": ""Value"",
                     ""id"": ""169d37d2-0f67-4768-bea0-1e943d83ca62"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -40,7 +40,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": ""Aim"",
                     ""type"": ""Value"",
                     ""id"": ""44d48b31-cb65-42a3-885a-79733213413c"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
