@@ -86,8 +86,8 @@ public class MechAim : MonoBehaviour, IAimInput
         camera = Cam.GetComponent<Camera>();
         camera.fieldOfView = defaultFOV;
         targetFOV = defaultFOV;
-        mouseSens = mouseDefaultSens;
-        gamepadSens = gamepadDefaultSens;
+        mouseTargetSens = mouseDefaultSens;
+        gamepadTargetSens = gamepadDefaultSens;
     }
 
     private void LateUpdate()
