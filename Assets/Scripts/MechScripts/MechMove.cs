@@ -20,7 +20,8 @@ public class MechMove : MonoBehaviour, IMoveInput
     private bool wantToRush;
 
     [Header("Strafing")]
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float maxMoveSpeed;
+    private float moveSpeed;
     [SerializeField] private float strafeMoveSpeed;
     [SerializeField] private float maxGroundForce;
     [SerializeField] private float maxAirForce;
@@ -57,6 +58,9 @@ public class MechMove : MonoBehaviour, IMoveInput
         rushThrusterActive = false;
         dashActive = false;
         wantToJump = false;
+
+        // set default maxmovespeed
+        moveSpeed = maxMoveSpeed;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -85,6 +89,14 @@ public class MechMove : MonoBehaviour, IMoveInput
     }
 
     public void SetGrounded(bool state) { isGrounded = state; }
+    
+    public void SetMaxMoveSpeed(float newMoveSpeed)
+    {
+        moveSpeed = newMoveSpeed;
+    }
+    
+    public void ResetMaxMoveSpeed() { moveSpeed = maxMoveSpeed; }
+
     public GameObject GetGameObject() { return gameObject; }
 
     public void DebugCheck()

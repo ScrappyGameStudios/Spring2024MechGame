@@ -66,6 +66,20 @@ public class MechController : MonoBehaviour, IInputAcceptor
         MechAim.OnTarget(context);
     }
 
+    public void OnZoomIn(float zoomLevel, float newMoveSpeed)
+    {
+        MechAim.OnZoomIn(zoomLevel);
+
+        MechMove.SetMaxMoveSpeed(newMoveSpeed);
+    }
+
+    public void OnZoomOut()
+    {
+        MechAim.OnZoomOut();
+
+        MechMove.ResetMaxMoveSpeed();
+    }
+
     #endregion
 
     #region ILoadoutInput

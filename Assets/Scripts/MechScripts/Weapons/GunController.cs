@@ -13,21 +13,30 @@ public class GunController : MonoBehaviour, IWeaponInput
 
     private bool wantToAttack;
     private bool wantToReload;
+    private bool wantToAltAttack;
+    private bool wantToAltReload;
 
     #region IWeaponInput
 
     public void OnWeaponAttack(InputAction.CallbackContext context)
     {
-        if (context.performed) wantToAttack = true;
-        else if (context.performed) wantToAttack = false;
+        wantToAttack = context.ReadValueAsButton();
     }
 
     public void OnWeaponReload(InputAction.CallbackContext context)
     {
-        if (context.performed) wantToReload = true;
-        else if (context.performed) wantToReload = false;
+        wantToReload = context.ReadValueAsButton();
     }
 
+    public void OnWeaponAltAttack(InputAction.CallbackContext context)
+    {
+        wantToAltAttack = context.ReadValueAsButton();
+    }
+
+    public void OnWeaponAltReload(InputAction.CallbackContext context)
+    {
+        wantToAltReload = context.ReadValueAsButton();
+    }
     #endregion
 
     // Start is called before the first frame update

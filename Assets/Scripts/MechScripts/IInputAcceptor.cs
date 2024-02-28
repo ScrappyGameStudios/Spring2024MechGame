@@ -8,6 +8,8 @@ public interface IInputAcceptor
     void OnMouseLook(InputAction.CallbackContext context);
     void OnGamepadLook(InputAction.CallbackContext context);
     void OnTarget(InputAction.CallbackContext context);
+    void OnZoomIn(float zoomLevel, float newMoveSpeed);
+    void OnZoomOut();
     void OnRightAttack(InputAction.CallbackContext context);
     void OnRightReload(InputAction.CallbackContext context);
     void OnLeftAttack(InputAction.CallbackContext context);

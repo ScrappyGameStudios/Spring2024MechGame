@@ -17,12 +17,8 @@ public class MechAim : MonoBehaviour, IAimInput
     [SerializeField] private Vector3 DashCamPosition;
     [SerializeField] private Vector2 mouseDefaultSens;
     [SerializeField] private Vector2 gamepadDefaultSens;
-    [SerializeField] private Vector2 mouseZoomSens;
-    [SerializeField] private Vector2 gamepadZoomSens;
     [SerializeField] private float defaultFOV;
-    [SerializeField] private float aimedFOVMulti;
     [SerializeField] private float zoomSpeed;
-    private float aimedFOV;
     private float targetFOV;
     private Vector2 mouseLook, gamepadLook;
     private Vector2 mouseSens, gamepadSens;
@@ -34,14 +30,7 @@ public class MechAim : MonoBehaviour, IAimInput
     private bool onRightSide;
     private Vector2 aimInput;
     private Transform CamTarget;
-
-    [Header("Manual Aim")]
-    [SerializeField] private float turnSpeed;
-    [SerializeField] private float maxTurnMultiplier;
-    [SerializeField] private float zoomedTurnMultiplier;
-    [SerializeField] private float turnAcceleration;
-    private float _turnSpeed;
-    private bool isZoomed;
+    private bool isLockOn;
 
     #region IAimInput
 
@@ -59,29 +48,24 @@ public class MechAim : MonoBehaviour, IAimInput
     {
         if (context.performed)
         {
-            if (isZoomed)
-            {
-                isZoomed = false;
-                CamTarget = DefaultCamPosition;
-                targetFOV = defaultFOV;
-                mouseTargetSens = mouseDefaultSens;
-                gamepadTargetSens = gamepadDefaultSens;
-            }
-            else
-            {
-                isZoomed = true;
-                CamTarget = PrecisionCamPosition;
-                targetFOV = aimedFOV;
-                mouseTargetSens = mouseZoomSens;
-                gamepadTargetSens = gamepadZoomSens;
-            }
-
-            Debug.Log("camera.fieldOfView: " + camera.fieldOfView);
-            Debug.Log("targetFOV: " + targetFOV);
-
-            Debug.Log("Cam Local Position: " + Cam.localPosition);
-            Debug.Log("CamTarget Local Position: " + CamTarget.localPosition);
+            isLockOn = !isLockOn;
         }
+    }
+
+    public void OnZoomIn(float zoomLevel)
+    {
+        CamTarget = PrecisionCamPosition;
+        targetFOV = defaultFOV / zoomLevel;
+        mouseTargetSens = mouseDefaultSens / zoomLevel;
+        gamepadTargetSens = gamepadDefaultSens / zoomLevel;
+    }
+
+    public void OnZoomOut()
+    {
+        CamTarget = DefaultCamPosition;
+        targetFOV = defaultFOV;
+        mouseTargetSens = mouseDefaultSens;
+        gamepadTargetSens = gamepadDefaultSens;
     }
 
     public void DebugCheck()
@@ -99,18 +83,11 @@ public class MechAim : MonoBehaviour, IAimInput
         gamepadAcceleration = 1f;
 
         CamTarget = DefaultCamPosition;
-        aimedFOV = defaultFOV / aimedFOVMulti;
         camera = Cam.GetComponent<Camera>();
         camera.fieldOfView = defaultFOV;
         targetFOV = defaultFOV;
         mouseSens = mouseDefaultSens;
         gamepadSens = gamepadDefaultSens;
-
-        Debug.Log("defaultFOV: " + defaultFOV);
-        Debug.Log("aimedFOV: " + aimedFOV);
-
-        Debug.Log("Cam Local Position: " + Cam.localPosition);
-        Debug.Log("CamTarget Local Position: " + CamTarget.localPosition);
     }
 
     private void LateUpdate()

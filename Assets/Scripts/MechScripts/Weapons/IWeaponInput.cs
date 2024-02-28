@@ -7,4 +7,6 @@ public interface IWeaponInput
 {
     void OnWeaponAttack(InputAction.CallbackContext context);
     void OnWeaponReload(InputAction.CallbackContext context);
+    void OnWeaponAltAttack(InputAction.CallbackContext context);
+    void OnWeaponAltReload(InputAction.CallbackContext context);
 }

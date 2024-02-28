@@ -461,7 +461,7 @@ MonoBehaviour:
   CameraParent: {fileID: 5920882331864131180}
   GroundCheck: {fileID: 9134622651219737895}
   PlayerCollider: {fileID: 0}
-  moveSpeed: 20
+  maxMoveSpeed: 20
   strafeMoveSpeed: 40
   maxGroundForce: 3
   maxAirForce: 0.3
@@ -493,15 +493,8 @@ MonoBehaviour:
   DashCamPosition: {x: 0, y: 4, z: -10}
   mouseDefaultSens: {x: 0.24, y: 0.16}
   gamepadDefaultSens: {x: 0.24, y: 0.16}
-  mouseZoomSens: {x: 0.12, y: 0.08}
-  gamepadZoomSens: {x: 0.12, y: 0.08}
   defaultFOV: 60
-  aimedFOVMulti: 2
   zoomSpeed: 0.15
-  turnSpeed: 1
-  maxTurnMultiplier: 1
-  zoomedTurnMultiplier: 1
-  turnAcceleration: 1
 --- !u!114 &4512476672157189081
 MonoBehaviour:
   m_ObjectHideFlags: 0
