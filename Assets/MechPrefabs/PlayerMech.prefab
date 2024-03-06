@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 558585372103468697}
   - component: {fileID: 4512476672157189081}
   - component: {fileID: 5649455044201221931}
-  - component: {fileID: 3939315045928885632}
+  - component: {fileID: 42747351023384115}
   m_Layer: 0
   m_Name: PlayerMech
   m_TagString: Untagged
@@ -456,23 +456,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f0a1aa72bc3cc4eaf16a62fb654980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 3939315045928885632}
+  rb: {fileID: 0}
+  cc: {fileID: 0}
   MechMoveAnimator: {fileID: 0}
   CameraParent: {fileID: 5920882331864131180}
   GroundCheck: {fileID: 9134622651219737895}
   PlayerCollider: {fileID: 0}
-  maxMoveSpeed: 20
+  MoveSpeed: 0
   strafeMoveSpeed: 40
-  maxGroundForce: 3
-  maxAirForce: 0.3
-  maxThrustForce: 1.5
+  maxGroundAccel: 0
+  maxAirAccel: 0
+  maxThrustAccel: 0
   maxThrustVelocity: 10
   thrustRechargeRate: 15
   thrustDelay: 0.2
   thrustCapacity: 100
-  ThrustSpeed: 80
+  thrustRechargeDelay: 0
+  dashCost: 0
+  rushSpeed: 0
+  rushDelay: 0
+  rushCapacity: 0
   jumpHeight: 0.5
-  landStallDuration: 0.25
+  gravity: 0
 --- !u!114 &558585372103468697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,9 +495,11 @@ MonoBehaviour:
   Cam: {fileID: 417310751919740345}
   DefaultCamPosition: {fileID: 8125004337745419700}
   PrecisionCamPosition: {fileID: 8742154586474549924}
-  DashCamPosition: {x: 0, y: 4, z: -10}
+  DashCamPosition: {fileID: 0}
   mouseDefaultSens: {x: 0.24, y: 0.16}
   gamepadDefaultSens: {x: 0.24, y: 0.16}
+  gamepadAccelRate: 0
+  gamepadAccelMax: 0
   defaultFOV: 60
   zoomSpeed: 0.15
 --- !u!114 &4512476672157189081
@@ -537,33 +544,32 @@ CapsuleCollider:
   m_Height: 8
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &3939315045928885632
-Rigidbody:
+--- !u!143 &42747351023384115
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4096830730744698969}
-  serializedVersion: 4
-  m_Mass: 10
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4729120019381675319
 GameObject:
   m_ObjectHideFlags: 0

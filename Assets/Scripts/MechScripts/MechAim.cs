@@ -10,13 +10,18 @@ public class MechAim : MonoBehaviour, IAimInput
 
     [Header("Camera References")]
     [SerializeField] private Transform CamHolder;
-    private Camera camera;
+    private Camera cam;
     [SerializeField] private Transform Cam;
     [SerializeField] private Transform DefaultCamPosition;
     [SerializeField] private Transform PrecisionCamPosition;
-    [SerializeField] private Vector3 DashCamPosition;
+    [SerializeField] private Transform DashCamPosition;
+    
+    [Header("Sensitivity Defaults")]
     [SerializeField] private Vector2 mouseDefaultSens;
     [SerializeField] private Vector2 gamepadDefaultSens;
+    [SerializeField] private float gamepadAccelRate;
+    [SerializeField] private float gamepadAccelMax;
+
     [SerializeField] private float defaultFOV;
     [SerializeField] private float zoomSpeed;
     private float targetFOV;
@@ -83,8 +88,8 @@ public class MechAim : MonoBehaviour, IAimInput
         gamepadAcceleration = 1f;
 
         CamTarget = DefaultCamPosition;
-        camera = Cam.GetComponent<Camera>();
-        camera.fieldOfView = defaultFOV;
+        cam = Cam.GetComponent<Camera>();
+        cam.fieldOfView = defaultFOV;
         targetFOV = defaultFOV;
         mouseTargetSens = mouseDefaultSens;
         gamepadTargetSens = gamepadDefaultSens;
@@ -148,12 +153,12 @@ public class MechAim : MonoBehaviour, IAimInput
             Cam.localPosition += camMagnitude;
         }
 
-        if (camera.fieldOfView != targetFOV)
+        if (cam.fieldOfView != targetFOV)
         {
             // difference in FOV
-            float zoomMagnitude = (targetFOV - camera.fieldOfView) / zoomSpeed * Time.deltaTime;
+            float zoomMagnitude = (targetFOV - cam.fieldOfView) / zoomSpeed * Time.deltaTime;
 
-            camera.fieldOfView += zoomMagnitude;
+            cam.fieldOfView += zoomMagnitude;
         }
 
         if (mouseSens != mouseTargetSens || gamepadSens != gamepadTargetSens)

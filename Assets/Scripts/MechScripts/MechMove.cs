@@ -7,45 +7,49 @@ public class MechMove : MonoBehaviour, IMoveInput
 {
 
     [Header("Important Components")]
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private CharacterController cc;
     [SerializeField] private Animator MechMoveAnimator;
     [SerializeField] private Transform CameraParent;
     [SerializeField] private Collider GroundCheck;
     [SerializeField] private Collider PlayerCollider;
+    private MoveMode _MoveMode;
     private bool isGrounded;
     private bool strafeThrusterActive;
-    private bool rushThrusterActive;
-    private bool dashActive;
     private bool wantToJump;
-    private bool wantToRush;
 
     [Header("Strafing")]
-    [SerializeField] private float maxMoveSpeed;
-    private float moveSpeed;
+    [SerializeField] private float MoveSpeed;
+    private float MaxMoveSpeed;
     [SerializeField] private float strafeMoveSpeed;
-    [SerializeField] private float maxGroundForce;
-    [SerializeField] private float maxAirForce;
+    [SerializeField] private float maxGroundAccel;
+    [SerializeField] private float maxAirAccel;
 
     [Header("Vertical Thruster")]
-    [SerializeField] private float maxThrustForce;
+    [SerializeField] private float maxThrustAccel;
     [SerializeField] private float maxThrustVelocity;
     [SerializeField] private float thrustRechargeRate;
     [SerializeField] private float thrustDelay;
     [SerializeField] private float thrustCapacity;
+    [SerializeField] private float thrustRechargeDelay;
+    [SerializeField] private float dashCost;
+    private Vector3 dashDir;
     private float _thrustDelay;
     private float _thrustCapacity;
+    private float _thrustRechargeDelay;
 
     [Header("Rush Thrusters")]
-    [SerializeField] private float ThrustSpeed;
+    [SerializeField] private float rushSpeed;
+    [SerializeField] private float rushDelay;
+    [SerializeField] private float rushCapacity;
+    private float _rushDelay;
+    private float _rushCapacity;
 
     [Header("Air Movement")]
     [SerializeField] private float jumpHeight;
-    [SerializeField] private float landStallDuration;
-
-    #region IMoveInput
+    [SerializeField] private float gravity;
 
     // input variables
-    private Vector2 move;
+    private Vector3 move3d;
 
     // Start is called before the first frame update
     void Start()
@@ -53,19 +57,18 @@ public class MechMove : MonoBehaviour, IMoveInput
         Cursor.lockState = CursorLockMode.Locked;
 
         // normalize input
-        move = Vector2.zero;
+        _MoveMode = MoveMode.Default;
         strafeThrusterActive = false;
-        rushThrusterActive = false;
-        dashActive = false;
         wantToJump = false;
-
-        // set default maxmovespeed
-        moveSpeed = maxMoveSpeed;
+        MaxMoveSpeed = MoveSpeed;
     }
+
+    #region IMoveInput
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        move = context.ReadValue<Vector2>();
+        Vector2 move = context.ReadValue<Vector2>();
+        move3d = new Vector3(move.x, 0f, move.y);
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -75,12 +78,37 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        Dash();
+        if (_MoveMode == MoveMode.Default || _MoveMode == MoveMode.StrafeThrusters)
+        {
+            if (_thrustCapacity > dashCost)
+            {
+                // start dash
+                _MoveMode = MoveMode.Dash;
+                dashDir = transform.TransformDirection(move3d);
+                _thrustCapacity = Mathf.Clamp(_thrustCapacity - dashCost, 0f, _thrustCapacity);
+            }
+            else
+            {
+                // play sound
+            }
+        }
     }
 
     public void OnRushThrust(InputAction.CallbackContext context)
     {
-        wantToRush = context.ReadValueAsButton();
+        if (_MoveMode == MoveMode.Default || _MoveMode == MoveMode.StrafeThrusters)
+        {
+            if (_rushCapacity > 0f)
+            {
+                // start dash
+                _rushDelay = rushDelay;
+                _MoveMode = MoveMode.RushThrusters;
+            }
+            else
+            {
+                // play sound
+            }
+        }
     }
 
     public void OnToggleStrafeThrusters(InputAction.CallbackContext context)
@@ -92,10 +120,10 @@ public class MechMove : MonoBehaviour, IMoveInput
     
     public void SetMaxMoveSpeed(float newMoveSpeed)
     {
-        moveSpeed = newMoveSpeed;
+        MoveSpeed = newMoveSpeed;
     }
     
-    public void ResetMaxMoveSpeed() { moveSpeed = maxMoveSpeed; }
+    public void ResetMaxMoveSpeed() { MoveSpeed = MaxMoveSpeed; }
 
     public GameObject GetGameObject() { return gameObject; }
 
@@ -109,13 +137,20 @@ public class MechMove : MonoBehaviour, IMoveInput
     // Update is called once per frame
     void FixedUpdate()
     {
-        // move or rush?
-        if (rushThrusterActive) RushThrust();
-        else LateralMove();
-
-        if (wantToJump)
+        // movement
+        switch (_MoveMode)
         {
-            Jump();
+            case MoveMode.Default:
+            case MoveMode.StrafeThrusters:
+                LateralMove();
+                if (wantToJump) VerticalMove();
+                break;
+            case MoveMode.RushThrusters:
+                RushThrust();
+                break;
+            case MoveMode.Dash:
+                Dash();
+                break;
         }
     }
 
@@ -124,70 +159,106 @@ public class MechMove : MonoBehaviour, IMoveInput
         ThrusterUpdate();
     }
 
-    // check all contacts with the ground to figure out angle of movement
-    private Vector3 FindSlopeAngle()
-    {
-        // all 
-
-        return Vector3.zero;
-    }
-
     #region movement
 
-    // lateral move
     private void LateralMove()
     {
-        // check if grounded
-        // raycast
+        // find current and target velocities
+        Vector3 currentVelocity = new Vector3(cc.velocity.x,0f,cc.velocity.z);
+        Vector3 adjustedMove3d = transform.TransformDirection(move3d);
+        Vector3 targetVelocity = adjustedMove3d * (strafeThrusterActive? strafeMoveSpeed : MoveSpeed);
 
-        // find target velocity
-        Vector3 currentVelocity = rb.velocity;
-        Vector3 targetVelocity = new Vector3(move.x, 0, move.y);
-        targetVelocity *= strafeThrusterActive? strafeMoveSpeed : moveSpeed;
+        // difference in velocities
+        Vector3 velDiff = targetVelocity - currentVelocity;
 
-        // align direction
-        targetVelocity = transform.TransformDirection(targetVelocity);
+        // initialize acceleration
+        Vector3 lateralMove;
 
-        // calculate forces
-        Vector3 velocityChange = (targetVelocity - currentVelocity);
-        velocityChange = new Vector3(velocityChange.x, 0, velocityChange.z);
-        float maxMagnitude = isGrounded? maxGroundForce : maxAirForce;
-
-        // limit force
-        velocityChange = Vector3.ClampMagnitude(velocityChange, strafeThrusterActive? maxThrustForce : maxMagnitude);
-
-        if (isGrounded || move.magnitude > 0f) rb.AddForce(velocityChange, ForceMode.VelocityChange);
-    }
-
-    // jump
-    private void Jump()
-    {
-        if (isGrounded)
+        // evaluate based on grounded and angle between velocities
+        if (strafeThrusterActive)
         {
-            float jumpVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
-
-            rb.AddForce(jumpVelocity * Vector3.up, ForceMode.VelocityChange);
+            
         }
         else
         {
-            if (rb.velocity.y < maxThrustVelocity && _thrustCapacity > 0f)
+            if (isGrounded)
             {
-                _thrustDelay = thrustDelay;
-                if (_thrustCapacity > 0f) _thrustCapacity += Time.fixedDeltaTime;
-
-                float vertThrust = maxThrustForce * Time.fixedDeltaTime;
-                Vector3 vertThrustVelChange = new Vector3(0, vertThrust, 0);
-
-                rb.AddForce(vertThrustVelChange, ForceMode.VelocityChange);
+                // accelerate to target velocity
+                lateralMove = velDiff.normalized * maxGroundAccel * Time.fixedDeltaTime;
+                lateralMove = Vector3.ClampMagnitude(lateralMove + currentVelocity, MoveSpeed);
+                cc.Move(lateralMove * Time.fixedDeltaTime);
             }
+            else
+            {
+                // prevent (most) excess acceleration
+                if (Vector3.Dot(adjustedMove3d, cc.velocity.normalized) > 0f && cc.velocity.magnitude < MoveSpeed)
+                {
+                    // remove component in direction of current velocity
+                    adjustedMove3d -= cc.velocity.normalized * Vector3.Dot(adjustedMove3d, cc.velocity.normalized);
+                }
+
+                // accelerate in direction of input
+                lateralMove = adjustedMove3d * maxAirAccel * Time.fixedDeltaTime * Time.fixedDeltaTime;
+                lateralMove += cc.velocity * Time.fixedDeltaTime;
+                cc.Move(lateralMove);
+            }
+        }
+    }
+
+    private void VerticalMove()
+    {
+        // only jump when grounded
+        if (isGrounded)
+        {
+            float jumpVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
+            // Only use below if using character controller
+            cc.Move(jumpVelocity * Vector3.up);
+        }
+        else if (_thrustDelay <= 0f && cc.velocity.y < maxThrustVelocity && _thrustCapacity > 0f)
+        {
+            _thrustDelay = thrustDelay;
+            if (_thrustCapacity > 0f) _thrustCapacity += Time.fixedDeltaTime;
+
+            float vertThrust = maxThrustAccel * Time.fixedDeltaTime;
+            Vector3 vertThrustVelChange = new Vector3(0, vertThrust, 0);
+
+            cc.Move(vertThrustVelChange);
+        }
+    }
+
+    private void Gravity()
+    {
+        if (isGrounded)
+        {
+            // push down to stick to surface
+            cc.Move(Vector3.down * 5f);
+        }
+        else
+        {
+            // push down on player while in the air
+            cc.Move(gravity * Vector3.down * Time.fixedDeltaTime * Time.fixedDeltaTime);
         }
     }
 
     private void ThrusterUpdate()
     {
         // thruster stuff
-        if (_thrustDelay > 0f) _thrustDelay -= Time.deltaTime;
-        else if (_thrustCapacity > 0f) _thrustCapacity += (thrustRechargeRate * Time.deltaTime);
+        if (!isGrounded)
+        {
+            // count down thrust delay when in the air
+            _thrustDelay -= Time.deltaTime; 
+        }
+        else
+        {
+            // reset thrust when grounded
+            _thrustDelay = thrustDelay;
+
+            if (_thrustCapacity <= 0f)
+            {
+                // recharge thrust capacity while grounded
+                _thrustCapacity += Time.deltaTime;
+            }
+        }
     }
 
     private void Dash()
@@ -195,16 +266,21 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     }
 
-    // rush thrusters
     private void RushThrust()
     {
         // track both time and direction
     }
 
-    private void StrafeThrusterToggle()
-    {
-        strafeThrusterActive = !strafeThrusterActive;
-    }
+    private void StrafeThrusterToggle() { strafeThrusterActive = !strafeThrusterActive; }
 
     #endregion
+}
+
+public enum MoveMode
+{
+    Default,
+    StrafeThrusters,
+    RushThrusters,
+    Dash,
+    Size
 }

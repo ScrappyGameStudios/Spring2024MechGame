@@ -6,9 +6,9 @@ using UnityEngine.InputSystem;
 public class MechController : MonoBehaviour, IInputAcceptor
 {
     
-    private IMoveInput MechMove;
-    private IAimInput MechAim;
-    private ILoadoutInput MechLoadout;
+    private MechMove MechMove;
+    private MechAim MechAim;
+    private MechLoadout MechLoadout;
 
     #region IMoveInput
 
@@ -131,9 +131,9 @@ public class MechController : MonoBehaviour, IInputAcceptor
 
     private void Awake()
     {
-        MechMove = GetComponent<IMoveInput>();
-        MechAim = GetComponent<IAimInput>();
-        MechLoadout = GetComponent<ILoadoutInput>();
+        MechMove = GetComponent<MechMove>();
+        MechAim = GetComponent<MechAim>();
+        MechLoadout = GetComponent<MechLoadout>();
     }
 
     // Start is called before the first frame update

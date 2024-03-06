@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GunController : MonoBehaviour, IWeaponInput
+public class WeaponController : MonoBehaviour
 {
     [Header("Necessary References")]
     [SerializeField] private Transform MuzzlePoint;
