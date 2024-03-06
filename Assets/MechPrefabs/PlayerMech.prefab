@@ -456,28 +456,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f0a1aa72bc3cc4eaf16a62fb654980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  cc: {fileID: 0}
+  cc: {fileID: 42747351023384115}
   MechMoveAnimator: {fileID: 0}
   CameraParent: {fileID: 5920882331864131180}
   GroundCheck: {fileID: 9134622651219737895}
-  PlayerCollider: {fileID: 0}
-  MoveSpeed: 0
+  PlayerCollider: {fileID: 5649455044201221931}
+  MoveSpeed: 20
   strafeMoveSpeed: 40
-  maxGroundAccel: 0
-  maxAirAccel: 0
-  maxThrustAccel: 0
+  maxGroundAccel: 35
+  maxAirAccel: 5
+  maxThrustAccel: 8
   maxThrustVelocity: 10
   thrustRechargeRate: 15
   thrustDelay: 0.2
   thrustCapacity: 100
-  thrustRechargeDelay: 0
-  dashCost: 0
+  thrustRechargeDelay: 0.5
+  dashCost: 0.5
   rushSpeed: 0
   rushDelay: 0
   rushCapacity: 0
-  jumpHeight: 0.5
-  gravity: 0
+  jumpHeight: 4
+  gravity: 20
 --- !u!114 &558585372103468697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,12 +562,12 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 8
+  m_Radius: 2.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0.0001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4729120019381675319
 GameObject:
