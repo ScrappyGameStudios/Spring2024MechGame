@@ -15,12 +15,15 @@ public class MechMove : MonoBehaviour, IMoveInput
     private MoveMode _MoveMode;
     private bool isGrounded;
     private bool strafeThrusterActive;
+    private bool caprineAscendersActive;
     private bool wantToJump;
 
     [Header("Strafing")]
     [SerializeField] private float MoveSpeed;
     private float MaxMoveSpeed;
     [SerializeField] private float strafeMoveSpeed;
+    [SerializeField] private float maxStrafeAccel;
+    [SerializeField] private float maxCaprineAccel;
     [SerializeField] private float maxGroundAccel;
     [SerializeField] private float maxAirAccel;
     private Vector3 move;
@@ -50,7 +53,9 @@ public class MechMove : MonoBehaviour, IMoveInput
     [SerializeField] private float gravity;
 
     // input variables
-    private Vector3 moveInput;
+    private Vector2 moveInput;
+    private Vector2 currentInputVector;
+    private Vector2 smoothInputVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -68,8 +73,7 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Vector2 move = context.ReadValue<Vector2>();
-        moveInput = new Vector3(move.x, 0f, move.y);
+        moveInput = context.ReadValue<Vector2>();
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -154,8 +158,6 @@ public class MechMove : MonoBehaviour, IMoveInput
                 Dash();
                 break;
         }
-        Debug.Log("moveInput: " + moveInput);
-        Debug.Log("move: " + move);
         cc.Move(move);
     }
 
@@ -168,6 +170,21 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     private void LateralMove()
     {
+        float accel;
+        if (strafeThrusterActive) accel = maxStrafeAccel;
+        else if (isGrounded)
+        {
+            if (caprineAscendersActive) accel = maxCaprineAccel;
+            else accel = maxGroundAccel;
+        }
+        else accel = maxAirAccel;
+
+        moveInput = transform.TransformDirection(moveInput);
+        currentInputVector = Vector2.SmoothDamp(currentInputVector, moveInput, ref smoothInputVelocity, accel);
+        Vector3 _move = new Vector3(currentInputVector.x, 0f, currentInputVector.y);
+        move += _move * Time.fixedDeltaTime * (strafeThrusterActive? strafeMoveSpeed : MoveSpeed);
+
+        /*
         // move += cc.velocity * Time.fixedDeltaTime;
         Debug.Log("LateralMove() called");
         // find current and target velocities
@@ -215,7 +232,7 @@ public class MechMove : MonoBehaviour, IMoveInput
                 Debug.Log("lateralMove: " + lateralMove);
                 move += lateralMove;
             }
-        }
+        }*/
     }
 
     private void VerticalMove()
@@ -224,8 +241,7 @@ public class MechMove : MonoBehaviour, IMoveInput
         if (isGrounded)
         {
             float jumpVelocity = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
-            // Only use below if using character controller
-            move += jumpVelocity * Vector3.up;
+            move += jumpVelocity * Vector3.up * Time.fixedDeltaTime;
         }
         else if (_thrustDelay <= 0f && cc.velocity.y < maxThrustVelocity && _thrustCapacity > 0f)
         {
@@ -290,12 +306,4 @@ public class MechMove : MonoBehaviour, IMoveInput
     private void StrafeThrusterToggle() { strafeThrusterActive = !strafeThrusterActive; }
 
     #endregion
-}
-
-public enum MoveMode
-{
-    Default,
-    RushThrusters,
-    Dash,
-    Size
 }

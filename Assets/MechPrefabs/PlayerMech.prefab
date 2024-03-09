@@ -463,8 +463,10 @@ MonoBehaviour:
   PlayerCollider: {fileID: 5649455044201221931}
   MoveSpeed: 20
   strafeMoveSpeed: 40
-  maxGroundAccel: 35
-  maxAirAccel: 5
+  maxStrafeAccel: 1.5
+  maxCaprineAccel: 0.1
+  maxGroundAccel: 0.5
+  maxAirAccel: 10
   maxThrustAccel: 8
   maxThrustVelocity: 10
   thrustRechargeRate: 15
@@ -475,8 +477,8 @@ MonoBehaviour:
   rushSpeed: 0
   rushDelay: 0
   rushCapacity: 0
-  jumpHeight: 4
-  gravity: 20
+  jumpHeight: 5
+  gravity: 5
 --- !u!114 &558585372103468697
 MonoBehaviour:
   m_ObjectHideFlags: 0
