@@ -63,7 +63,7 @@ public class MechMove : MonoBehaviour, IMoveInput
         Cursor.lockState = CursorLockMode.Locked;
 
         // normalize input
-        _MoveMode = MoveMode.Default;
+        _MoveMode = MoveMode.Standard;
         strafeThrusterActive = false;
         wantToJump = false;
         MaxMoveSpeed = MoveSpeed;
@@ -83,12 +83,11 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (_MoveMode == MoveMode.Default)
+        if (_MoveMode == MoveMode.Standard)
         {
             if (_thrustCapacity > dashCost)
             {
                 // start dash
-                _MoveMode = MoveMode.Dash;
                 dashDir = transform.TransformDirection(moveInput);
                 _thrustCapacity = Mathf.Clamp(_thrustCapacity - dashCost, 0f, _thrustCapacity);
             }
@@ -101,13 +100,13 @@ public class MechMove : MonoBehaviour, IMoveInput
 
     public void OnRushThrust(InputAction.CallbackContext context)
     {
-        if (_MoveMode == MoveMode.Default)
+        if (_MoveMode == MoveMode.Standard)
         {
             if (_rushCapacity > 0f)
             {
                 // start dash
                 _rushDelay = rushDelay;
-                _MoveMode = MoveMode.RushThrusters;
+                _MoveMode = MoveMode.StrafeThrusters;
             }
             else
             {
@@ -146,16 +145,13 @@ public class MechMove : MonoBehaviour, IMoveInput
         move = Vector3.zero;
         switch (_MoveMode)
         {
-            case MoveMode.Default:
+            case MoveMode.Standard:
                 LateralMove();
                 Gravity();
                 if (wantToJump) VerticalMove();
                 break;
-            case MoveMode.RushThrusters:
+            case MoveMode.StrafeThrusters:
                 RushThrust();
-                break;
-            case MoveMode.Dash:
-                Dash();
                 break;
         }
         cc.Move(move);

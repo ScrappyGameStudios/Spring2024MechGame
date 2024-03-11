@@ -9,7 +9,9 @@ public class SwitchVCam : MonoBehaviour
     [SerializeField]
     private int priorityBoostAmount = 10;
     [SerializeField]
-    private CinemachineBrain CineBrain;
+    private Canvas NormalFireCanvas;
+    [SerializeField]
+    private Canvas AimedFireCanvas;
 
     private float zoomLevel;
 
@@ -32,10 +34,14 @@ public class SwitchVCam : MonoBehaviour
     private void StartAim()
     {
         virtualCamera.Priority += priorityBoostAmount;
+        AimedFireCanvas.enabled = true;
+        NormalFireCanvas.enabled = false;
     }
 
     private void StopAim()
     {
         virtualCamera.Priority -= priorityBoostAmount;
+        NormalFireCanvas.enabled = true;
+        AimedFireCanvas.enabled = false;
     }
 }
