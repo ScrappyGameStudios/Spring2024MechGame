@@ -73,6 +73,16 @@ public class PlayerController : MonoBehaviour
     private float strafeThrusterSlope = 45f;
 
     private float slopeAngle;
+
+    [Header("MoveMode Slope Angle")]
+    [SerializeField]
+    private float standardStep = 45f;
+    [SerializeField]
+    private float caprineStep = 70f;
+    [SerializeField]
+    private float strafeThrusterStep = 45f;
+
+    private float stepHeight;
     #endregion MoveMode variables
 
     private CharacterController controller;
@@ -81,18 +91,20 @@ public class PlayerController : MonoBehaviour
     private Transform cameraTransform;
 
     private Vector2 moveInput;
+    private Vector2 aimInput;
     private bool wantToJump;
     private Vector2 currentInputVector;
     private Vector2 smoothInputVelocity;
 
-    #region input
+    #region Input
     public void OnMove(InputAction.CallbackContext context) { moveInput = context.ReadValue<Vector2>(); }
     public void OnJump(InputAction.CallbackContext context) 
     {
         if (context.performed) wantToJump = true;
         else if (context.canceled) wantToJump = false;
     }
-    #endregion
+    public void OnAim(InputAction.CallbackContext context) { aimInput = context.ReadValue<Vector2>(); }
+    #endregion Input
 
     private void Start()
     {
@@ -123,6 +135,7 @@ public class PlayerController : MonoBehaviour
                 jumpHeight = standardJumpHeight;
                 gravityValue = standardGravity;
                 rotationSpeed = standardRotation;
+                slopeAngle = standardSlope;
                 break;
             case MoveMode.CaprineAscenders:
                 groundAccelRate = caprineGroundRate;
@@ -131,6 +144,7 @@ public class PlayerController : MonoBehaviour
                 jumpHeight = caprineJumpHeight;
                 gravityValue = caprineGravity;
                 rotationSpeed = caprineRotation;
+                slopeAngle = caprineSlope;
                 break;
             case MoveMode.StrafeThrusters:
                 groundAccelRate = strafeThrusterRate;
@@ -139,6 +153,7 @@ public class PlayerController : MonoBehaviour
                 jumpHeight = strafeThrusterJumpHeight;
                 gravityValue = strafeThrusterGravity;
                 rotationSpeed = strafeThrusterRotation;
+                slopeAngle = strafeThrusterSlope;
                 break;
         }
     }
@@ -178,6 +193,11 @@ public class PlayerController : MonoBehaviour
         // rotate towards camera direction
         Quaternion rotation = Quaternion.Euler(0f, cameraTransform.eulerAngles.y, 0f);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationSpeed);
+    }
+
+    private void Dash()
+    {
+
     }
 }
 

@@ -14107,7 +14107,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 395314000}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -18468,7 +18468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40735c1af933331499be417cac97aae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMoveMode: 1
+  playerMoveMode: 2
   standardSpeed: 8
   caprineSpeed: 10
   strafeThrusterSpeed: 20
@@ -18489,6 +18489,9 @@ MonoBehaviour:
   standardSlope: 45
   caprineSlope: 70
   strafeThrusterSlope: 45
+  standardStep: 45
+  caprineStep: 70
+  strafeThrusterStep: 45
 --- !u!143 &466212349
 CharacterController:
   m_ObjectHideFlags: 0
@@ -56178,7 +56181,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 79173e5df5c2d4943a8acb5394dc11fc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
