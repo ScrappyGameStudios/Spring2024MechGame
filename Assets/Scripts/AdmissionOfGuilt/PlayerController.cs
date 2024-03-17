@@ -95,19 +95,18 @@ public class PlayerController : MonoBehaviour
     private bool wantToJump;
     private Vector2 currentInputVector;
     private Vector2 smoothInputVelocity;
+    private MoveAbility currentAbility;
+    private Vector3 DashDir;
 
     #region Input
     public void OnMove(InputAction.CallbackContext context) { moveInput = context.ReadValue<Vector2>(); }
-    public void OnJump(InputAction.CallbackContext context) 
-    {
-        if (context.performed) wantToJump = true;
-        else if (context.canceled) wantToJump = false;
-    }
+    public void OnJump(InputAction.CallbackContext context) { wantToJump = context.ReadValueAsButton(); }
     public void OnAim(InputAction.CallbackContext context) { aimInput = context.ReadValue<Vector2>(); }
     #endregion Input
 
     private void Start()
     {
+        currentAbility = MoveAbility.None;
         controller = GetComponent<CharacterController>();
         cameraTransform = Camera.main.transform;
 
@@ -117,7 +116,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Move();
+        switch (currentAbility)
+        {
+            case MoveAbility.Dash:
+                Dash();
+                break;
+            case MoveAbility.Rush:
+                Rush();
+                break;
+            default:
+                Move();
+                break;
+        }
     }
 
     public void SetMoveMode(MoveMode Mode)
@@ -136,6 +146,7 @@ public class PlayerController : MonoBehaviour
                 gravityValue = standardGravity;
                 rotationSpeed = standardRotation;
                 slopeAngle = standardSlope;
+                stepHeight = standardStep;
                 break;
             case MoveMode.CaprineAscenders:
                 groundAccelRate = caprineGroundRate;
@@ -145,6 +156,7 @@ public class PlayerController : MonoBehaviour
                 gravityValue = caprineGravity;
                 rotationSpeed = caprineRotation;
                 slopeAngle = caprineSlope;
+                stepHeight = caprineStep;
                 break;
             case MoveMode.StrafeThrusters:
                 groundAccelRate = strafeThrusterRate;
@@ -154,6 +166,24 @@ public class PlayerController : MonoBehaviour
                 gravityValue = strafeThrusterGravity;
                 rotationSpeed = strafeThrusterRotation;
                 slopeAngle = strafeThrusterSlope;
+                stepHeight = strafeThrusterStep;
+                break;
+        }
+
+        // properly set step and slope
+        controller.slopeLimit = slopeAngle;
+        controller.stepOffset = stepHeight;
+    }
+    public void SetMoveAbility(MoveAbility Ability) 
+    { 
+        currentAbility = Ability; 
+        switch (currentAbility)
+        {
+            case MoveAbility.Dash:
+                StartDash();
+                break;
+            case MoveAbility.Rush:
+                StartRush();
                 break;
         }
     }
@@ -199,6 +229,17 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+    private void StartDash() 
+    {
+        DashDir = new Vector3(cameraTransform.forward.x, 0f, cameraTransform.forward.z).normalized;
+        DashDir = moveInput.x * cameraTransform.right.normalized + moveInput.y * DashDir;
+    }
+
+    private void Rush()
+    {
+
+    }
+    private void StartRush() { }
 }
 
 public enum MoveMode
@@ -206,5 +247,13 @@ public enum MoveMode
     Standard,
     CaprineAscenders,
     StrafeThrusters,
+    Size
+}
+public enum MoveAbility
+{
+    None,
+    Dash,
+    Rush,
+    Cooldown,
     Size
 }

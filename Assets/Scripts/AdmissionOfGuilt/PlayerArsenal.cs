@@ -10,21 +10,24 @@ public class PlayerArsenal : MonoBehaviour
     // universal weapon scripts and unique for each equipment type
     [Header("Equipped Weapons")]
     [SerializeField]
-    private List<GameObject> ActiveWeapons;
+    private WeaponBase WeaponOne;
+    [SerializeField]
+    private WeaponBase WeaponTwo;
 
     [SerializeField]
-    private GameObject LeftSideWeapon;
+    private WeaponBase LeftSideWeapon;
     [SerializeField]
-    private GameObject RightSideWeapon;
+    private WeaponBase RightSideWeapon;
 
+    [Header("Equipped Equipment")]
     [SerializeField]
-    private GameObject BackEquipment;
+    public BackEquipment Back;
     [SerializeField]
-    private GameObject LegEquipment;
+    public LegEquipment Leg;
     [SerializeField]
-    private GameObject ArmorEquipment;
+    public ArmorEquipment Armor;
     [SerializeField]
-    private GameObject ThrusterEquipment;
+    public ThrusterEquipment Thruster;
     #endregion Arsenal
 
     #region MovementAbilities
@@ -51,16 +54,23 @@ public class PlayerArsenal : MonoBehaviour
 
     #region Input
     // update below after implementing weapon/equipment scripts
+    // pass on to selected weapon
     public void OnWeaponAction(InputAction.CallbackContext context) { }
     public void OnWeaponAltAction(InputAction.CallbackContext context) { }
     public void OnWeaponReload(InputAction.CallbackContext context) { }
     public void OnWeaponAltReload(InputAction.CallbackContext context) { }
+    // update to use side weapons
+    public void OnLeftSideAction(InputAction.CallbackContext context) { }
+    public void OnRightSideAction(InputAction.CallbackContext context) { }
+    public void OnDash(InputAction.CallbackContext context) { }
+    public void OnRush(InputAction.CallbackContext context) { }
+    public void OnToggleStrafe(InputAction.CallbackContext context) { }
     #endregion Input
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -69,3 +79,36 @@ public class PlayerArsenal : MonoBehaviour
         
     }
 }
+
+#region enumerators
+public enum BackEquipment
+{
+    None,
+    ShieldGenerator,
+    BackupFuelTanks,
+    AmmoPrinter,
+    Size
+}
+public enum LegEquipment
+{
+    None,
+    CaprineAscenders,
+    StrafeThrusters,
+    SeismicDampers,
+    Size
+}
+public enum ArmorEquipment
+{
+    None,
+    ReactivePlating,
+    InsulatedSleeving,
+    Size
+}
+public enum ThrusterEquipment
+{
+    None,
+    RushThrusters,
+    OverfueledNozzles,
+    Size
+}
+#endregion

@@ -4924,7 +4924,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 425534783756007184, guid: 86435ddca3b6b594c90df3944bfa1da4, type: 3}
       propertyPath: m_Lens.FieldOfView
-      value: 70
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 734738031015506069, guid: 86435ddca3b6b594c90df3944bfa1da4, type: 3}
       propertyPath: m_Name
@@ -4940,7 +4940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4336350189012909776, guid: 86435ddca3b6b594c90df3944bfa1da4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.383558
+      value: 9.053072
       objectReference: {fileID: 0}
     - target: {fileID: 4336350189012909776, guid: 86435ddca3b6b594c90df3944bfa1da4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18449,6 +18449,7 @@ GameObject:
   - component: {fileID: 466212350}
   - component: {fileID: 466212349}
   - component: {fileID: 466212348}
+  - component: {fileID: 466212355}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -18698,6 +18699,33 @@ Transform:
   - {fileID: 1391237789}
   m_Father: {fileID: 869371966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &466212355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466212347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7a22cb6c574097499d863385d66b62b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActiveWeapons: []
+  maxActiveEquipped: 2
+  LeftSideWeapon: {fileID: 0}
+  RightSideWeapon: {fileID: 0}
+  BackEquipment: {fileID: 0}
+  LegEquipment: {fileID: 0}
+  ArmorEquipment: {fileID: 0}
+  ThrusterEquipment: {fileID: 0}
+  fuelMax: 1
+  refuelCooldown: 1.5
+  refuelRate: 0.5
+  mustResetOnEmpty: 1
+  dashTime: 0.5
+  dashCooldown: 0.5
+  fuelCost: 0.5
 --- !u!43 &473851174
 Mesh:
   m_ObjectHideFlags: 0
@@ -29880,6 +29908,37 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &686082103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 686082104}
+  m_Layer: 0
+  m_Name: Brrel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &686082104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686082103}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1391237789}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &687570593
 Mesh:
   m_ObjectHideFlags: 0
@@ -48433,7 +48492,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 70
+  field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: 0
@@ -48460,7 +48519,7 @@ Transform:
   m_GameObject: {fileID: 1166886205}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 9.383558, z: -5}
+  m_LocalPosition: {x: 0, y: 9.053072, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56137,7 +56196,8 @@ Transform:
   m_LocalPosition: {x: 0.5, y: 0, z: 0.5}
   m_LocalScale: {x: 0.2, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 686082104}
   m_Father: {fileID: 466212354}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1391237790
@@ -73829,7 +73889,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2881679268148041468, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.47908
+      value: 8.220783
       objectReference: {fileID: 0}
     - target: {fileID: 2881679268148041468, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_LocalPosition.z
@@ -73897,7 +73957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8199488483561981122, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_Lens.FieldOfView
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8199488483561981122, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_Transitions.m_InheritPosition
