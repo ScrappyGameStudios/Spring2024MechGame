@@ -97,6 +97,11 @@ public class PlayerController : MonoBehaviour
     private Vector2 smoothInputVelocity;
     private MoveAbility currentAbility;
     private Vector3 DashDir;
+    private float cooldownTime;
+    private float startupTime;
+    private float dashTime;
+    private float dashSpeed;
+    private float rushSpeed;
 
     #region Input
     public void OnMove(InputAction.CallbackContext context) { moveInput = context.ReadValue<Vector2>(); }
@@ -118,14 +123,22 @@ public class PlayerController : MonoBehaviour
     {
         switch (currentAbility)
         {
+            case MoveAbility.None:
+                Move(moveInput);
+                break;
             case MoveAbility.Dash:
                 Dash();
                 break;
             case MoveAbility.Rush:
                 Rush();
                 break;
-            default:
-                Move();
+            case MoveAbility.Cooldown:
+                if (cooldownTime > 0f)
+                {
+                    cooldownTime -= Time.deltaTime;
+                    Move(Vector2.zero);
+                }
+                else currentAbility = MoveAbility.None;
                 break;
         }
     }
@@ -174,21 +187,35 @@ public class PlayerController : MonoBehaviour
         controller.slopeLimit = slopeAngle;
         controller.stepOffset = stepHeight;
     }
-    public void SetMoveAbility(MoveAbility Ability) 
-    { 
-        currentAbility = Ability; 
-        switch (currentAbility)
+    public bool SetMoveAbility(MoveAbility Ability, float duration, float speed) 
+    {
+        if (currentAbility == MoveAbility.None)
         {
-            case MoveAbility.Dash:
-                StartDash();
-                break;
-            case MoveAbility.Rush:
-                StartRush();
-                break;
+            currentAbility = Ability;
+            switch (currentAbility)
+            {
+                case MoveAbility.Dash:
+                    dashSpeed = speed;
+                    dashTime = duration;
+                    StartDash();
+                    break;
+                case MoveAbility.Rush:
+                    rushSpeed = speed;
+                    startupTime = duration;
+                    break;
+            }
+            return true;
         }
+        else if (currentAbility == MoveAbility.Rush && Ability == MoveAbility.Cooldown)
+        {
+            currentAbility = Ability;
+            cooldownTime = duration;
+            return true;
+        }
+        else return false;
     }
 
-    private void Move()
+    private void Move(Vector2 Input)
     {
         // initialize acceleration and such
         float accel = groundAccelRate;
@@ -209,7 +236,7 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 lateralMove = new Vector3(cameraTransform.forward.x, 0f, cameraTransform.forward.z).normalized;
-        lateralMove = moveInput.x * cameraTransform.right.normalized + moveInput.y * lateralMove;
+        lateralMove = Input.x * cameraTransform.right.normalized + Input.y * lateralMove;
 
         Vector2 latMove = new Vector2(lateralMove.x, lateralMove.z);
         currentInputVector = Vector2.SmoothDamp(currentInputVector, latMove, ref smoothInputVelocity, accel);
@@ -225,21 +252,36 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationSpeed);
     }
 
-    private void Dash()
-    {
-
-    }
-    private void StartDash() 
+    private void StartDash()
     {
         DashDir = new Vector3(cameraTransform.forward.x, 0f, cameraTransform.forward.z).normalized;
         DashDir = moveInput.x * cameraTransform.right.normalized + moveInput.y * DashDir;
     }
+    private void Dash()
+    {
+        if (dashTime > 0f)
+        {
+            // decrement timer
+            dashTime -= Time.deltaTime;
+
+            // move in DashDir
+        }
+        else SetMoveAbility(MoveAbility.None, 0f, 0f);
+    }
 
     private void Rush()
     {
-
+        if (startupTime > 0f)
+        {
+            // run cooldown timer
+            startupTime -= Time.deltaTime;
+            Move(Vector2.zero);
+        }
+        else
+        {
+            // rush forward
+        }
     }
-    private void StartRush() { }
 }
 
 public enum MoveMode
