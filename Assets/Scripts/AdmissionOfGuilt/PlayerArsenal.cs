@@ -62,7 +62,7 @@ public class PlayerArsenal : MonoBehaviour
 
     [Header("Rush Info")]
     [SerializeField]
-    private float rushSpeed = 10.0f;
+    private float rushSpeed = 8.0f;
     [SerializeField]
     private float rushStartup = 1.0f;
     [SerializeField]

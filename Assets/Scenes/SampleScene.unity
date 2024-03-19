@@ -18711,21 +18711,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a22cb6c574097499d863385d66b62b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveWeapons: []
-  maxActiveEquipped: 2
+  WeaponOne: {fileID: 0}
+  WeaponTwo: {fileID: 0}
   LeftSideWeapon: {fileID: 0}
   RightSideWeapon: {fileID: 0}
-  BackEquipment: {fileID: 0}
-  LegEquipment: {fileID: 0}
-  ArmorEquipment: {fileID: 0}
-  ThrusterEquipment: {fileID: 0}
+  Back: 0
+  Leg: 0
+  Armor: 0
+  Thruster: 0
   fuelMax: 1
   refuelCooldown: 1.5
   refuelRate: 0.5
   mustResetOnEmpty: 1
+  dashSpeed: 10
   dashTime: 0.5
   dashCooldown: 0.5
-  fuelCost: 0.5
+  dashFuelCost: 0.5
+  rushSpeed: 10
+  rushStartup: 1
+  rushCooldown: 0.5
+  rushFuelCost: 0.5
 --- !u!43 &473851174
 Mesh:
   m_ObjectHideFlags: 0
@@ -73873,7 +73878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 615981200263590498, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_TrackedObjectOffset.y
-      value: 0.5
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 858509054930291544, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_Strategy
@@ -73889,7 +73894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2881679268148041468, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.220783
+      value: 8.470783
       objectReference: {fileID: 0}
     - target: {fileID: 2881679268148041468, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_LocalPosition.z

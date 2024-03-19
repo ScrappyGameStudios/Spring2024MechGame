@@ -215,6 +215,7 @@ public class PlayerController : MonoBehaviour
         else return false;
     }
 
+    #region Movement Updates
     private void Move(Vector2 Input)
     {
         // initialize acceleration and such
@@ -282,6 +283,7 @@ public class PlayerController : MonoBehaviour
             // rush forward
         }
     }
+    #endregion Movement updates
 }
 
 public enum MoveMode
