@@ -61,8 +61,11 @@ public class PlayerArsenal : MonoBehaviour
     private float refuelRate = 0.5f;
     [SerializeField]
     private bool mustResetOnEmpty = true;
+    [SerializeField]
+    private float pickupRefuel = 0.5f;
 
     [Header("Extended Tanks")]
+    [SerializeField]
     private float extendedMax = 1.0f;
 
     private bool needReset = false;
@@ -160,7 +163,7 @@ public class PlayerArsenal : MonoBehaviour
     #region Movement Input
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (!CheckFuelLevels()) return;
+        if (!CheckIfFuelExists()) return;
         // can we dash?
         if (pc.SetMoveAbility(MoveAbility.Dash, dashTime, dashSpeed))
         {
@@ -172,11 +175,14 @@ public class PlayerArsenal : MonoBehaviour
     }
     public void OnRush(InputAction.CallbackContext context)
     {
-        if (!CheckFuelLevels()) return;
+        if (!CheckIfFuelExists()) return;
         // can we rush?
-        if (pc.SetMoveAbility(MoveAbility.Rush, rushStartup, rushSpeed))
+        if (context.performed && Thruster == ThrusterEquipment.RushThrusters)
         {
+            if (pc.SetMoveAbility(MoveAbility.Rush, rushStartup, rushSpeed))
+            {
 
+            }
         }
     }
     public void OnToggleStrafe(InputAction.CallbackContext context)
@@ -194,12 +200,23 @@ public class PlayerArsenal : MonoBehaviour
         // fuel initialization
         fuelCurrent = fuelMax;
         extendedCurrent = extendedMax;
+        FuelBar.ShowResourceBar();
+        FuelBar.UpdateResourceBar(fuelMax, fuelCurrent);
+        switch (Back)
+        {
+            case BackEquipment.BackupFuelTanks:
+                ExtendedFuelBar.ShowResourceBar();
+                break;
+            default:
+                ExtendedFuelBar.HideResourceBar();
+                break;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        FuelUpdate();
+        if (fuelCurrent < fuelMax) FuelUpdate();
     }
 
     #region Fuel
@@ -207,15 +224,18 @@ public class PlayerArsenal : MonoBehaviour
     {
         if (fuelPause > 0f)
         {
+            // countdown to refuel
             fuelPause -= Time.deltaTime;
         }
         else
         {
-
+            // refuel over time
+            fuelCurrent = Mathf.Clamp(fuelCurrent + Time.deltaTime * refuelRate,0f,fuelMax);
+            FuelBar.UpdateResourceBar(fuelMax, fuelCurrent);
         }
     }
 
-    private bool CheckFuelLevels()
+    private bool CheckIfFuelExists()
     {
         // check appropriate places
         switch (Back)
@@ -231,6 +251,23 @@ public class PlayerArsenal : MonoBehaviour
         }
 
         return false;
+    }
+    private bool CheckForMaxFuel()
+    {
+        // check appropriate places
+        switch (Back)
+        {
+            case BackEquipment.BackupFuelTanks:
+                // is there fuel? does it still need a full reset
+                if (fuelCurrent < fuelMax || extendedCurrent < extendedMax) return false;
+                break;
+            default:
+                // is there fuel?
+                if (fuelCurrent < fuelMax) return false;
+                break;
+        }
+
+        return true;
     }
 
     private void ExpendFuel(float amount)
@@ -277,11 +314,53 @@ public class PlayerArsenal : MonoBehaviour
                 }
                 break;
         }
+
+        FuelBar.UpdateResourceBar(fuelMax, fuelCurrent);
+        ExtendedFuelBar.UpdateResourceBar(extendedMax, extendedCurrent);
+    }
+
+    private void AddFuel()
+    {
+        // check appropriate places
+        switch (Back)
+        {
+            case BackEquipment.BackupFuelTanks:
+                // check backup first
+                if (extendedCurrent < extendedMax) extendedCurrent = Mathf.Clamp(extendedCurrent + pickupRefuel,0f,extendedMax);
+                break;
+            default:
+                // is there fuel?
+                if (!needReset && fuelCurrent > 0f) ;
+                break;
+        }
     }
     #endregion Fuel
+
+    public bool PickupResource(PickupTier tier, bool mega)
+    {
+        switch (tier)
+        {
+            case PickupTier.Fuel:
+                if (true) { }
+                break;
+            case PickupTier.Ammo:
+                break;
+            case PickupTier.Mixed:
+                break;
+        }
+        return false;
+    }
 }
 
 #region enumerators
+public enum PickupTier
+{
+    None,
+    Fuel,
+    Ammo,
+    Mixed,
+    Size
+}
 public enum WeaponSlot
 {
     None,

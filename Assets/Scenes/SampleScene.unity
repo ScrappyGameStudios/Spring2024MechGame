@@ -5016,7 +5016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4336350189012909776, guid: 86435ddca3b6b594c90df3944bfa1da4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.053072
+      value: 9.053072
       objectReference: {fileID: 0}
     - target: {fileID: 4336350189012909776, guid: 86435ddca3b6b594c90df3944bfa1da4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18713,7 +18713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40735c1af933331499be417cac97aae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMoveMode: 2
+  playerMoveMode: 0
   standardSpeed: 8
   caprineSpeed: 10
   strafeThrusterSpeed: 20
@@ -18935,7 +18935,7 @@ Transform:
   m_GameObject: {fileID: 466212347}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
+  m_LocalPosition: {x: 0, y: 7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18955,8 +18955,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a22cb6c574097499d863385d66b62b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FuelBar: {fileID: 0}
-  ExtendedFuelBar: {fileID: 0}
+  FuelBar: {fileID: 673716373}
+  ExtendedFuelBar: {fileID: 1595451124}
   NormalCrosshair: {fileID: 0}
   AimedCrosshair: {fileID: 0}
   WeaponDisplay: {fileID: 0}
@@ -18964,7 +18964,7 @@ MonoBehaviour:
   WeaponTwo: {fileID: 0}
   LeftSideWeapon: {fileID: 0}
   RightSideWeapon: {fileID: 0}
-  Back: 0
+  Back: 2
   Leg: 0
   Armor: 0
   Thruster: 0
@@ -18972,6 +18972,8 @@ MonoBehaviour:
   refuelCooldown: 1.5
   refuelRate: 0.5
   mustResetOnEmpty: 1
+  pickupRefuel: 0.5
+  extendedMax: 1
   dashSpeed: 10
   dashTime: 0.5
   dashCooldown: 0.5
@@ -49375,7 +49377,7 @@ Transform:
   m_GameObject: {fileID: 1166886205}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 8.053072, z: -5}
+  m_LocalPosition: {x: 0, y: 9.053072, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -75277,7 +75279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2881679268148041468, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.470783
+      value: 8.470783
       objectReference: {fileID: 0}
     - target: {fileID: 2881679268148041468, guid: 76fc98c6b3bbe6f45b46796ec2e8b813, type: 3}
       propertyPath: m_LocalPosition.z

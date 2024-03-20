@@ -12,7 +12,7 @@ public class ResourceBar : MonoBehaviour
     public void UpdateResourceBar(float maxResource, float currentResource)
     {
         _resourceSprite.fillAmount = currentResource / maxResource;
-        _resourceText.text = currentResource.ToString();
+        //_resourceText.text = currentResource.ToString();
     }
 
     public void ShowResourceBar()

@@ -112,15 +112,20 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         currentAbility = MoveAbility.None;
+        MoveMode moveMode = playerMoveMode;
+        playerMoveMode = MoveMode.Size;
         controller = GetComponent<CharacterController>();
         cameraTransform = Camera.main.transform;
 
         // set to standard mode by default
-        SetMoveMode(playerMoveMode);
+        SetMoveMode(moveMode);
     }
 
     void Update()
     {
+        Debug.Log("Update!");
+        Debug.Log("playerSpeed: " + playerSpeed);
+        Debug.Log("PlayerInput: " + moveInput);
         switch (currentAbility)
         {
             case MoveAbility.None:
@@ -244,11 +249,13 @@ public class PlayerController : MonoBehaviour
 
         Vector3 lateralMove = new Vector3(cameraTransform.forward.x, 0f, cameraTransform.forward.z).normalized;
         lateralMove = Input.x * cameraTransform.right.normalized + Input.y * lateralMove;
+        Debug.Log("lateralMove: " + lateralMove);
 
         Vector2 latMove = new Vector2(lateralMove.x, lateralMove.z);
         currentInputVector = Vector2.SmoothDamp(currentInputVector, latMove, ref smoothInputVelocity, accel);
         Vector3 move = new Vector3(currentInputVector.x, 0f, currentInputVector.y);
         move *= Time.deltaTime * playerSpeed;
+        Debug.Log("move: " + move);
 
         // perform gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
