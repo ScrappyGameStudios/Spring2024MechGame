@@ -3,8 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerController))]
 public class PlayerArsenal : MonoBehaviour
 {
+    private PlayerController pc;
+
+    #region Player UI
+    [Header("Resource Bars")]
+    [SerializeField]
+    private ResourceBar FuelBar;
+    [SerializeField]
+    private ResourceBar ExtendedFuelBar;
+
+    [Header("Combat Interface")]
+    [SerializeField]
+    private GameObject NormalCrosshair;
+    [SerializeField]
+    private GameObject AimedCrosshair;
+    [SerializeField]
+    private GameObject WeaponDisplay;
+    #endregion Player UI
+
     #region Arsenal
     // replace below with unique scripts
     // universal weapon scripts and unique for each equipment type
@@ -35,7 +54,7 @@ public class PlayerArsenal : MonoBehaviour
     #region MovementAbilities
     [Header("Fuel Resource")]
     [SerializeField]
-    private float fuelMax = 1.0f;
+    private float fuelMax = 2.0f;
     [SerializeField]
     private float refuelCooldown = 1.5f;
     [SerializeField]
@@ -56,9 +75,9 @@ public class PlayerArsenal : MonoBehaviour
     [SerializeField]
     private float dashTime = 0.5f;
     [SerializeField]
-    private float dashCooldown = 0.5f;
+    private float dashCooldown = 0.8f;
     [SerializeField]
-    private float dashFuelCost = 0.5f;
+    private float dashFuelCost = 1.0f;
 
     [Header("Rush Info")]
     [SerializeField]
@@ -69,6 +88,8 @@ public class PlayerArsenal : MonoBehaviour
     private float rushCooldown = 1.5f;
     [SerializeField]
     private float rushFuelCost = 0.3f;
+
+    private float fuelPause;
     #endregion MovementAbilities
 
     #region Weapon Input
@@ -139,13 +160,32 @@ public class PlayerArsenal : MonoBehaviour
     #region Movement Input
     public void OnDash(InputAction.CallbackContext context)
     {
+        if (!CheckFuelLevels()) return;
+        // can we dash?
+        if (pc.SetMoveAbility(MoveAbility.Dash, dashTime, dashSpeed))
+        {
+            // set fuel timer
+            fuelPause = dashCooldown;
 
+            ExpendFuel(dashFuelCost);
+        }
     }
     public void OnRush(InputAction.CallbackContext context)
     {
+        if (!CheckFuelLevels()) return;
+        // can we rush?
+        if (pc.SetMoveAbility(MoveAbility.Rush, rushStartup, rushSpeed))
+        {
 
+        }
     }
-    public void OnToggleStrafe(InputAction.CallbackContext context) { }
+    public void OnToggleStrafe(InputAction.CallbackContext context)
+    {
+        if (context.performed && Leg == LegEquipment.StrafeThrusters)
+        {
+            if (!pc.SetMoveMode(MoveMode.StrafeThrusters)) pc.SetMoveMode(MoveMode.Standard);
+        }
+    }
     #endregion Movement Input
 
     // Start is called before the first frame update
@@ -159,8 +199,86 @@ public class PlayerArsenal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        FuelUpdate();
     }
+
+    #region Fuel
+    private void FuelUpdate()
+    {
+        if (fuelPause > 0f)
+        {
+            fuelPause -= Time.deltaTime;
+        }
+        else
+        {
+
+        }
+    }
+
+    private bool CheckFuelLevels()
+    {
+        // check appropriate places
+        switch (Back)
+        {
+            case BackEquipment.BackupFuelTanks:
+                // is there fuel? does it still need a full reset
+                if (!needReset && (fuelCurrent + extendedCurrent) > 0f) return true;
+                break;
+            default:
+                // is there fuel?
+                if (!needReset && fuelCurrent > 0f) return true;
+                break;
+        }
+
+        return false;
+    }
+
+    private void ExpendFuel(float amount)
+    {
+        // check appropriate sources
+        switch (Back)
+        {
+            case BackEquipment.BackupFuelTanks:
+                // use fuel
+                if (fuelCurrent > amount)
+                {
+                    // only take from fuel
+                    fuelCurrent -= amount;
+                }
+                else if (extendedCurrent > (amount - fuelCurrent))
+                {
+                    // only extended has fuel
+                    extendedCurrent -= (amount - fuelCurrent);
+                    fuelCurrent = 0f;
+                }
+                else
+                {
+                    // tanks empty
+                    extendedCurrent = 0f;
+                    fuelCurrent = 0f;
+
+                    // need reset?
+                    needReset = mustResetOnEmpty;
+                }
+                break;
+            default:
+                if (fuelCurrent > amount)
+                {
+                    // only take from fuel
+                    fuelCurrent -= amount;
+                }
+                else
+                {
+                    // tank empty
+                    fuelCurrent = 0f;
+
+                    // need reset?
+                    needReset = mustResetOnEmpty;
+                }
+                break;
+        }
+    }
+    #endregion Fuel
 }
 
 #region enumerators

@@ -143,49 +143,55 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SetMoveMode(MoveMode Mode)
+    public bool SetMoveMode(MoveMode Mode)
     {
-        // set mode
-        playerMoveMode = Mode;
-
-        // set all variables
-        switch (playerMoveMode)
+        if (playerMoveMode != Mode)
         {
-            case MoveMode.Standard:
-                groundAccelRate = standardGroundRate;
-                airAccelRate = standardAirRate;
-                playerSpeed = standardSpeed;
-                jumpHeight = standardJumpHeight;
-                gravityValue = standardGravity;
-                rotationSpeed = standardRotation;
-                slopeAngle = standardSlope;
-                stepHeight = standardStep;
-                break;
-            case MoveMode.CaprineAscenders:
-                groundAccelRate = caprineGroundRate;
-                airAccelRate = caprineAirRate;
-                playerSpeed = caprineSpeed;
-                jumpHeight = caprineJumpHeight;
-                gravityValue = caprineGravity;
-                rotationSpeed = caprineRotation;
-                slopeAngle = caprineSlope;
-                stepHeight = caprineStep;
-                break;
-            case MoveMode.StrafeThrusters:
-                groundAccelRate = strafeThrusterRate;
-                airAccelRate = strafeThrusterRate;
-                playerSpeed = strafeThrusterSpeed;
-                jumpHeight = strafeThrusterJumpHeight;
-                gravityValue = strafeThrusterGravity;
-                rotationSpeed = strafeThrusterRotation;
-                slopeAngle = strafeThrusterSlope;
-                stepHeight = strafeThrusterStep;
-                break;
-        }
+            // set mode
+            playerMoveMode = Mode;
 
-        // properly set step and slope
-        controller.slopeLimit = slopeAngle;
-        controller.stepOffset = stepHeight;
+            // set all variables
+            switch (playerMoveMode)
+            {
+                case MoveMode.Standard:
+                    groundAccelRate = standardGroundRate;
+                    airAccelRate = standardAirRate;
+                    playerSpeed = standardSpeed;
+                    jumpHeight = standardJumpHeight;
+                    gravityValue = standardGravity;
+                    rotationSpeed = standardRotation;
+                    slopeAngle = standardSlope;
+                    stepHeight = standardStep;
+                    break;
+                case MoveMode.CaprineAscenders:
+                    groundAccelRate = caprineGroundRate;
+                    airAccelRate = caprineAirRate;
+                    playerSpeed = caprineSpeed;
+                    jumpHeight = caprineJumpHeight;
+                    gravityValue = caprineGravity;
+                    rotationSpeed = caprineRotation;
+                    slopeAngle = caprineSlope;
+                    stepHeight = caprineStep;
+                    break;
+                case MoveMode.StrafeThrusters:
+                    groundAccelRate = strafeThrusterRate;
+                    airAccelRate = strafeThrusterRate;
+                    playerSpeed = strafeThrusterSpeed;
+                    jumpHeight = strafeThrusterJumpHeight;
+                    gravityValue = strafeThrusterGravity;
+                    rotationSpeed = strafeThrusterRotation;
+                    slopeAngle = strafeThrusterSlope;
+                    stepHeight = strafeThrusterStep;
+                    break;
+            }
+
+            // properly set step and slope
+            controller.slopeLimit = slopeAngle;
+            controller.stepOffset = stepHeight;
+
+            return true;
+        }
+        else return false;
     }
     public bool SetMoveAbility(MoveAbility Ability, float duration, float speed) 
     {
