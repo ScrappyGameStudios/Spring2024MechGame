@@ -12194,6 +12194,7 @@ GameObject:
   - component: {fileID: 357225885}
   - component: {fileID: 357225887}
   - component: {fileID: 357225886}
+  - component: {fileID: 357225888}
   m_Layer: 0
   m_Name: ArmorBar
   m_TagString: Untagged
@@ -12260,6 +12261,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 357225884}
   m_CullTransparentMesh: 1
+--- !u!114 &357225888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357225884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf09eb0046a2c54d89c14a138f4e7b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourceSprite: {fileID: 1600858174}
+  _resourceText: {fileID: 1250788271}
 --- !u!1 &360867678
 GameObject:
   m_ObjectHideFlags: 0
@@ -18940,6 +18955,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a22cb6c574097499d863385d66b62b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FuelBar: {fileID: 0}
+  ExtendedFuelBar: {fileID: 0}
+  NormalCrosshair: {fileID: 0}
+  AimedCrosshair: {fileID: 0}
+  WeaponDisplay: {fileID: 0}
   WeaponOne: {fileID: 0}
   WeaponTwo: {fileID: 0}
   LeftSideWeapon: {fileID: 0}
@@ -29860,6 +29880,7 @@ GameObject:
   - component: {fileID: 673716370}
   - component: {fileID: 673716372}
   - component: {fileID: 673716371}
+  - component: {fileID: 673716373}
   m_Layer: 0
   m_Name: FuelBar
   m_TagString: Untagged
@@ -29925,6 +29946,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 673716369}
   m_CullTransparentMesh: 1
+--- !u!114 &673716373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673716369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf09eb0046a2c54d89c14a138f4e7b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourceSprite: {fileID: 647128983}
+  _resourceText: {fileID: 0}
 --- !u!43 &675303916
 Mesh:
   m_ObjectHideFlags: 0
@@ -60599,6 +60634,7 @@ GameObject:
   - component: {fileID: 1595451121}
   - component: {fileID: 1595451123}
   - component: {fileID: 1595451122}
+  - component: {fileID: 1595451124}
   m_Layer: 0
   m_Name: ExpandedFuelBar
   m_TagString: Untagged
@@ -60664,6 +60700,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595451120}
   m_CullTransparentMesh: 1
+--- !u!114 &1595451124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1595451120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf09eb0046a2c54d89c14a138f4e7b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourceSprite: {fileID: 491167808}
+  _resourceText: {fileID: 0}
 --- !u!1 &1597592865
 GameObject:
   m_ObjectHideFlags: 0
@@ -63407,6 +63457,7 @@ GameObject:
   - component: {fileID: 1655061350}
   - component: {fileID: 1655061352}
   - component: {fileID: 1655061351}
+  - component: {fileID: 1655061353}
   m_Layer: 0
   m_Name: ShieldBar
   m_TagString: Untagged
@@ -63473,6 +63524,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1655061349}
   m_CullTransparentMesh: 1
+--- !u!114 &1655061353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655061349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cf09eb0046a2c54d89c14a138f4e7b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resourceSprite: {fileID: 666089759}
+  _resourceText: {fileID: 746997326}
 --- !u!1 &1661907727
 GameObject:
   m_ObjectHideFlags: 0
